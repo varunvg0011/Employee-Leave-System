@@ -1,0 +1,37 @@
+F:\CODING\CSharp\Employee leave system\Employee leave system\bin\Debug\net6.0\appsettings.Development.json
+F:\CODING\CSharp\Employee leave system\Employee leave system\bin\Debug\net6.0\appsettings.json
+F:\CODING\CSharp\Employee leave system\Employee leave system\bin\Debug\net6.0\Employee leave system.staticwebassets.runtime.json
+F:\CODING\CSharp\Employee leave system\Employee leave system\bin\Debug\net6.0\Employee leave system.exe
+F:\CODING\CSharp\Employee leave system\Employee leave system\bin\Debug\net6.0\Employee leave system.deps.json
+F:\CODING\CSharp\Employee leave system\Employee leave system\bin\Debug\net6.0\Employee leave system.runtimeconfig.json
+F:\CODING\CSharp\Employee leave system\Employee leave system\bin\Debug\net6.0\Employee leave system.dll
+F:\CODING\CSharp\Employee leave system\Employee leave system\bin\Debug\net6.0\Employee leave system.pdb
+F:\CODING\CSharp\Employee leave system\Employee leave system\obj\Debug\net6.0\Employee leave system.csproj.AssemblyReference.cache
+F:\CODING\CSharp\Employee leave system\Employee leave system\obj\Debug\net6.0\Employee leave system.GeneratedMSBuildEditorConfig.editorconfig
+F:\CODING\CSharp\Employee leave system\Employee leave system\obj\Debug\net6.0\Employee leave system.AssemblyInfoInputs.cache
+F:\CODING\CSharp\Employee leave system\Employee leave system\obj\Debug\net6.0\Employee leave system.AssemblyInfo.cs
+F:\CODING\CSharp\Employee leave system\Employee leave system\obj\Debug\net6.0\Employee leave system.csproj.CoreCompileInputs.cache
+F:\CODING\CSharp\Employee leave system\Employee leave system\obj\Debug\net6.0\Employee leave system.MvcApplicationPartsAssemblyInfo.cache
+F:\CODING\CSharp\Employee leave system\Employee leave system\obj\Debug\net6.0\Employee leave system.RazorAssemblyInfo.cache
+F:\CODING\CSharp\Employee leave system\Employee leave system\obj\Debug\net6.0\Employee leave system.RazorAssemblyInfo.cs
+F:\CODING\CSharp\Employee leave system\Employee leave system\obj\Debug\net6.0\staticwebassets.build.json
+F:\CODING\CSharp\Employee leave system\Employee leave system\obj\Debug\net6.0\staticwebassets.development.json
+F:\CODING\CSharp\Employee leave system\Employee leave system\obj\Debug\net6.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+F:\CODING\CSharp\Employee leave system\Employee leave system\obj\Debug\net6.0\scopedcss\bundle\Employee leave system.styles.css
+F:\CODING\CSharp\Employee leave system\Employee leave system\obj\Debug\net6.0\scopedcss\projectbundle\Employee leave system.bundle.scp.css
+F:\CODING\CSharp\Employee leave system\Employee leave system\obj\Debug\net6.0\Employee leave system.dll
+F:\CODING\CSharp\Employee leave system\Employee leave system\obj\Debug\net6.0\refint\Employee leave system.dll
+F:\CODING\CSharp\Employee leave system\Employee leave system\obj\Debug\net6.0\Employee leave system.pdb
+F:\CODING\CSharp\Employee leave system\Employee leave system\obj\Debug\net6.0\Employee leave system.genruntimeconfig.cache
+F:\CODING\CSharp\Employee leave system\Employee leave system\obj\Debug\net6.0\ref\Employee leave system.dll
+F:\CODING\CSharp\Employee leave system\Employee leave system\bin\Debug\net6.0\System.Data.SqlClient.dll
+F:\CODING\CSharp\Employee leave system\Employee leave system\bin\Debug\net6.0\runtimes\win-arm64\native\sni.dll
+F:\CODING\CSharp\Employee leave system\Employee leave system\bin\Debug\net6.0\runtimes\win-x64\native\sni.dll
+F:\CODING\CSharp\Employee leave system\Employee leave system\bin\Debug\net6.0\runtimes\win-x86\native\sni.dll
+F:\CODING\CSharp\Employee leave system\Employee leave system\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+F:\CODING\CSharp\Employee leave system\Employee leave system\bin\Debug\net6.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+F:\CODING\CSharp\Employee leave system\Employee leave system\obj\Debug\net6.0\Employee leave system.csproj.CopyComplete
+F:\CODING\CSharp\Employee leave system\Employee leave system\bin\Debug\net6.0\RestSharp.dll
+F:\CODING\CSharp\Employee leave system\Employee leave system\bin\Debug\net6.0\DotNet.Cookies.dll
+F:\CODING\CSharp\Employee leave system\Employee leave system\bin\Debug\net6.0\libman.json
+F:\CODING\CSharp\Employee leave system\Employee leave system\bin\Debug\net6.0\System.Web.Http.Common.dll

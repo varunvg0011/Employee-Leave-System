@@ -1,0 +1,386 @@
+﻿<script src="/js/InputValidations.js" type="text/javascript"></script>
+
+@*@model Employee_leave_system.Models.EmployeeRegistration
+*@
+@{
+    Layout = null;
+}
+
+
+
+<div class="AddEmployeePage" style="background-color:lavender">
+    <br />
+    <div class="text-center" style="width:60%;margin:auto;border: 2px solid black;border-radius:10px;background-color:floralwhite;">
+        <p>Fill below details to register an Employee in the database.</p>
+    </div>
+    <br />
+    <div class="mb-3" style="display:table;padding:40px 20px 10px 20px !important ;margin:auto !important; width: 50% !important; border: solid green 3px;background-color:antiquewhite">
+        <div style="display:table-row">
+            <div style="display:table-cell">
+              <i class='fas fa-id-card-alt' style='font-size:24px'></i>
+              <label for="Username" class="form-label" >Username: </label>
+            </div>
+              <input type="text" class="form-control" id="username" style="display:table-cell" />
+        </div>
+        <br />
+        <div style="display:table-row">
+            <div style="display:table-cell">
+                <i class='fas fa-id-badge' style='font-size:24px'></i>
+                <label for="FirstName" class="form-label">First Name: </label>
+            </div>
+              <input type="text" class="form-control" id="FirstName" style="display:table-cell" />
+        </div>
+        <br />
+        <div style="display:table-row">
+            <div style="display:table-cell">
+                <i class='far fa-id-badge' style='font-size:24px'></i>
+                <label for="LastName" class="form-label" >Last Name: </label>
+            </div>
+              <input type="text" class="form-control" id="LastName" style="display:table-cell" />
+        </div>
+        <br />   
+        <div style="display:table-row">
+            <div style="display:table-cell">
+                <i class='fas fa-users' style='font-size:24px'></i>
+                <label for="Gender" class="form-label">Gender: </label>
+            </div>
+            <div class="form-check">
+                @*while putting onchangbe we are also passing a parameter*@
+                <input type="radio" class="form-check-input" name="Gender" value="male" style="display:table-cell" onclick="SetGender1('Male')" />
+                <label class="form-check-label" for="male" style="padding-right:10px">
+                    Male
+                </label>
+            </div>
+            <div class="form-check">
+               <input class="form-check-input" type="radio" name="Gender" value="female" style="display:table-cell" onclick="SetGender1('Female')" />
+               <label class="form-check-label" for="female" style="padding-right:10px">
+                 Female
+               </label>
+            </div>
+            <div class="form-check">
+               <input class="form-check-input" type="radio" name="Gender" value="others" style="display:table-cell" onclick="SetGender1('Others')" />
+               <label class="form-check-label" for="others" style="padding-right:10px">
+                 Others
+               </label>
+            </div>
+        </div>
+        <br />
+        <div style="display:table-row">
+            <div style="display:table-cell">
+                <i class='fas fa-user-tag' style='font-size:24px'></i>
+                <label for="Designation" class="form-label" >Designation: </label>
+            </div>
+              <input type="text" class="form-control" id="Designation" style="display:table-cell">
+        </div>
+        <br />
+        <div style="display:table-row">
+            <div style="display:table-cell">
+                <i class='fas fa-calendar-alt' style='font-size:24px'></i>
+                <label for="CasualLeaves" class="form-label">Casual Leaves: </label>
+            </div>
+               <input type="number" class="form-control" id="CasualLeaves" style="display:table-cell" />
+        </div>
+        <br />    
+        <div style="display:table-row">
+            <div style="display:table-cell">
+                <i class='fas fa-calendar-alt' style='font-size:24px'></i>
+                <label for="SickLeaves" class="form-label">Sick Leaves: </label>
+            </div>
+              <input type="number" class="form-control" id="SickLeaves" style="display:table-cell" />
+        </div>
+        <br />   
+        <div style="display:table-row">
+            <div style="display:table-cell">
+                <i class='fas fa-calendar-alt' style='font-size:24px'></i>
+                <label for="MatternityLeaves" class="form-label">Matternity Leaves: </label>
+            </div>
+              <input type="number" class="form-control" id="MatternityLeaves" style="display:table-cell" />
+        </div>
+        <br />    
+        <div style="display:table-row">
+            <div style="display:table-cell" >
+                <i class='fas fa-calendar-alt' style='font-size:24px'></i>
+                <label for="PatternityLeaves" class="form-label">Patternity Leaves: </label>
+            </div>
+                <input type="number" class="form-control" id="PatternityLeaves" style="display:table-cell" />
+        </div>
+        <br />
+        <div style="display:table-row">
+            <div style="display:table-cell" >
+                <i class='fas fa-eye' style='font-size:24px'></i>             
+                <label for="Password" class="form-label">Password: </label>
+            </div>
+                <input type="password" class="form-control" id="Password" style="display:table-cell" />
+        </div>
+        <br />
+        <div style="display:table-row">
+            <div style="display:table-cell">
+                <i class='fas fa-calendar' style='font-size:24px'></i>              
+                <label for="RegDate" class="form-label">Registration date:</label>
+            </div>
+                <input type="date" value="@DateTime.Today.ToString("yyyy-MM-dd")" class="form-control" id="RegDate" style="display:table-cell" disabled readonly />
+        </div>
+        <br />
+        <div style="display:table-row">
+            <label style="display:table-cell" for="img">Add Emplopyee's image:</label>
+            <input style="display:table-cell" type="file" onchange="SelectProfilePic(this)" name="img" accept="image/*" />
+        </div>
+        <br />
+        <div style="width:max-content;position:relative;left:25%;">
+            <button type="button" onclick=AddEmployeeToDB() class="btn btn-primary" style="margin-left:150px">Add Details</button>
+            <button type="button" onclick=CancelAddingEmployee() class="btn btn-primary" style="display:table-cell">Cancel</button>
+        </div>
+        <br />    
+    </div>
+</div>
+
+
+<script>
+    function CancelAddingEmployee(){
+        window.location="AllEmployees"
+    }
+
+    var imgDataBase64="" 
+    function SelectProfilePic(element){
+        var file = element.files[0];
+        var reader = new FileReader();
+        reader.onloadend = function() {
+        imgDataBase64 = reader.result
+    }
+    reader.readAsDataURL(file);
+    }
+
+    function SetGender1(gender)
+    {
+        //always convert to uppercase and can use trim as well
+        if(gender.toUpperCase()=='MALE'){
+            document.getElementById('MatternityLeaves').disabled = true
+            document.getElementById('PatternityLeaves').disabled = false;
+        }
+        else if(gender.toUpperCase()=='FEMALE'){
+            document.getElementById('PatternityLeaves').disabled = true
+            document.getElementById('MatternityLeaves').disabled = false;
+        }
+        else{
+            document.getElementById('MatternityLeaves').disabled = true
+            document.getElementById('PatternityLeaves').disabled = true
+        }        
+    }
+    
+    function AddEmployeeToDB()
+    {        
+            let username = document.getElementById('username').value
+            let firstName = document.getElementById('FirstName').value
+            let lastName = document.getElementById('LastName').value
+            //gender
+            let genderArr = document.getElementsByName('Gender')
+            var gender=""
+            for(var ele of genderArr){
+                if(ele.checked)
+                {
+                    var genderString = ele.value
+                    if(genderString.toUpperCase() == 'MALE'){
+                        gender = 'M'
+                    }
+                    else if(genderString.toUpperCase() == 'FEMALE'){
+                        gender = 'F'
+                    }
+                    else{
+                        gender = 'O'
+                    }
+                }
+            }
+            let designation = document.getElementById('Designation').value
+            let casualLeaves = document.getElementById('CasualLeaves').value
+            let sickLeaves = document.getElementById('SickLeaves').value
+            
+            let matternityLeaves, patternityLeaves
+            if(gender == "M"){
+                matternityLeaves = null;
+                patternityLeaves = document.getElementById('PatternityLeaves').value
+            }
+            else if(gender =='F'){
+                patternityLeaves = null;
+                matternityLeaves = document.getElementById('MatternityLeaves').value
+            }
+            else{
+                matternityLeaves = null;
+                patternityLeaves = null;
+            }
+            let password = document.getElementById('Password').value
+            let regDate = document.getElementById('RegDate').value
+            
+            
+            //img data
+            if(IsValidUsername(username) && IsValidFirstName(firstName) && IsValidLastName(lastName) && IsValidDesignation(designation) && IsValidPassword(password))
+            {    
+                $.ajax({
+                    url:"AddEmployeeToDB",
+                    method:"POST",
+                    data:
+                    {
+                        username : username,    
+                        firstName : firstName,
+                        lastName : lastName,
+                        gender : gender,
+                        designation: designation,
+                        casualLeaves : casualLeaves,
+                        sickLeaves : sickLeaves,
+                        matternityLeaves : matternityLeaves,
+                        patternityLeaves : patternityLeaves,
+                        password: password,
+                        regDate: regDate,
+                        imgData: imgDataBase64
+                    },
+                    success: function(res)
+                    {
+                        if(res){
+                            alert('Employee has been added.')
+                            window.location = "AllEmployees"
+                        }
+                    },
+                    fail: function(res)
+                    {
+                       
+                    },
+                })
+            }
+            else{
+                    alert('Please use the correct format for the Details you are trying to update.')
+            }                       
+    }
+</script>
+
+
+
+
+@*@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()        
+    <div class="form-horizontal" style="margin:auto !important;width: 50% !important;border: solid green 3px;padding: 10px;">                           
+            <hr />          
+            <div class="form-group">         
+                
+                <i class='fas fa-id-badge' style='font-size:24px'></i>                
+                @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2" })              
+                <div class="col-md-10">       
+                    showing the input box and binding it with model.Username
+                    
+                    @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })                  
+                    @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })  
+                </div>          
+            </div> 
+            
+            <div class="form-group">           
+                @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })              
+                <div class="col-md-10">                  
+                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control"} })                  
+                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })  
+                </div>          
+            </div>
+
+            <div class="form-group">           
+                @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })              
+                <div class="col-md-10">                  
+                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control"} })                  
+                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })  
+                </div>          
+            </div>
+
+
+            <div class="form-group" id="gender">           
+                @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label col-md-2" })              
+                <div class="col-md-10"> 
+                    @Html.RadioButtonFor(model => model.Gender, "Male")
+                    Male  
+                    @Html.RadioButtonFor(model => model.Gender, "Female")  
+                    Female  
+                    @Html.RadioButtonFor(model => model.Gender, "Others")
+                    Others
+                    
+                </div>           
+            </div>
+
+
+            <div class="form-group">           
+                @Html.LabelFor(model => model.Designation, htmlAttributes: new { @class = "control-label col-md-2" })              
+                <div class="col-md-10">                  
+                    @Html.EditorFor(model => model.Designation, new { htmlAttributes = new { @class = "form-control"} })                  
+                    @Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })  
+                </div>          
+            </div>
+
+
+            
+            <div class="form-group">           
+                @Html.LabelFor(model => model.CasualLeaves, htmlAttributes: new { @class = "control-label col-md-2" })              
+                <div class="col-md-10">                  
+                    @Html.EditorFor(model => model.CasualLeaves, new { htmlAttributes = new { @class = "form-control"} })                  
+                    @Html.ValidationMessageFor(model => model.CasualLeaves, "", new { @class = "text-danger" })  
+                </div>          
+            </div>
+
+
+            
+            <div class="form-group">           
+                @Html.LabelFor(model => model.SickLeaves, htmlAttributes: new { @class = "control-label col-md-2" })              
+                <div class="col-md-10">                  
+                    @Html.EditorFor(model => model.SickLeaves, new { htmlAttributes = new { @class = "form-control"} })                  
+                    @Html.ValidationMessageFor(model => model.SickLeaves, "", new { @class = "text-danger" })  
+                </div>          
+            </div>
+
+
+            
+            <div class="form-group">           
+                @Html.LabelFor(model => model.MatternityLeaves, htmlAttributes: new { @class = "control-label col-md-2" })              
+                <div class="col-md-10">                  
+                    @Html.EditorFor(model => model.MatternityLeaves, new { htmlAttributes = new { @class = "form-control"} })                  
+                    @Html.ValidationMessageFor(model => model.MatternityLeaves, "", new { @class = "text-danger" })  
+                </div>          
+            </div>
+
+
+            
+            <div class="form-group">           
+                @Html.LabelFor(model => model.PatternityLeaves, htmlAttributes: new { @class = "control-label col-md-2" })              
+                <div class="col-md-10">                  
+                    @Html.EditorFor(model => model.PatternityLeaves, new { htmlAttributes = new { @class = "form-control"} })                  
+                    @Html.ValidationMessageFor(model => model.PatternityLeaves, "", new { @class = "text-danger" })  
+                </div>          
+            </div>
+
+
+            <div class="form-group">           
+                @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })              
+                <div class="col-md-10">                  
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", type = "password"} })                  
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })  
+                </div>          
+            </div>
+
+
+            <div class="form-group">           
+                @Html.LabelFor(model => model.RegistrationDate, htmlAttributes: new { @class = "control-label col-md-2" })              
+                <div class="col-md-10">                  
+                    @Html.EditorFor(model => model.RegistrationDate, new { htmlAttributes = new { @class = "form-control", @readonly="readonly" } })                  
+                    @Html.ValidationMessageFor(model => model.RegistrationDate, "", new { @class = "text-danger" })  
+                </div>          
+            </div>
+
+
+            when we click on submit button the AdminLogin function gets loaded only to the POST method
+    when more than one methods u will get ambiguity
+            
+            <input value="Add Employee" type="submit" onclick=AddEmployeeToDB()/>
+            
+     </div>
+}*@
+
+
+<link href="/css/bootstrap.min.css" rel="stylesheet" >
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+

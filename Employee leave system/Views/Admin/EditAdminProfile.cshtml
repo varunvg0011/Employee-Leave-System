@@ -1,0 +1,277 @@
+﻿@model Employee_leave_system.Models.AdminUserDetails
+
+
+@{
+    Layout = null;
+    //SortedList<string, Object> ListOfAdDetails = ViewBag.AdminDetailsList;
+
+}
+          
+
+
+<script src="~/js/InputValidations.js" type="text/javascript"></script>
+
+<div style="background-color:lavender">
+    <hr />
+    <div class="container" style="text-align:center;">
+         <h5>Below are the current details of the admin, you can change them and click on Update Details to update them.</h5>
+    </div>
+    @*<div style="background-color:antiquewhite">
+        <div class="AdminDashboardPage" style="padding:40px 20px 10px 20px !important ;margin:auto !important; width: 50% !important; border: solid purple 3px;display:table;background-color:lavender">
+        
+            <div style="display:table-row">
+                <div style="display:table-cell">
+                    <i class='fas fa-key' style='font-size:24px'></i>
+                    <label for="AdminId" class="form-label" >Admin Id: </label>
+                </div>
+                <input type="text" value=@ListOfAdDetails["dbAdminId"] class="form-control" id="AdminId" style="display:table-cell" disabled>
+            </div>
+            <br />
+
+            <div style="display:table-row">
+                <div style="display:table-cell">
+                   <i class='fas fa-user-alt' style='font-size:24px'></i>
+                   <label for="FirstName" class="form-label" >First Name: </label>
+                </div>
+                  <input type="text" value=@ListOfAdDetails["dbFName"] class="form-control" id="FirstName" style="display:table-cell" >
+            </div>
+            <br />
+
+            <div style="display:table-row">
+                <div style="display:table-cell">
+                   <i class='far fa-id-badge' style='font-size:24px'></i>
+                   <label for="LastName" class="form-label">Last Name: </label>
+                </div>
+                  <input type="text" value=@ListOfAdDetails["dbLName"] class="form-control" id="LastName" style="display:table-cell">
+            </div>
+            <br />
+    
+        
+
+            <div style="display:table-row">
+                <div style="display:table-cell">
+                    <i class='fas fa-user-tag' style='font-size:24px'></i>
+                    <label for="Designation" class="form-label" >Designation: </label>
+                </div>
+                  <input type="text" value='@ListOfAdDetails["dbDesignation"]' class="form-control" id="Designation" style="display:table-cell" >
+            </div>
+            <br />
+
+            <div style="display:table-row">
+                <div style="display:table-cell">          
+                    <i class='fas fa-user-clock' style='font-size:24px'></i>
+                    <label for="Age" class="form-label">Age: </label>               
+                </div>
+                  <input type="number" value=@ListOfAdDetails["dbAge"] class="form-control" id="Age" style="display:table-cell" >
+            </div>
+            <br />
+    
+            <div style="display:table-row">
+                <div style="display:table-cell">
+                    <i class='fas fa-users' style='font-size:24px'></i>
+                    <label for="Gender" class="form-label">Gender: </label>
+                </div>
+                  <input type="text" value=@ListOfAdDetails["dbGender"] class="form-control" id="Gender" style="display:table-cell" disabled>
+            </div>
+            <br />
+    
+            <div style="display:table-row">
+                <div style="display:table-cell">
+                    <i class='fas fa-calendar-alt' style='font-size:24px'></i>
+                    <label for="DateOfRegistration" class="form-label">Date of Registration: </label>
+                </div>
+                  <input type="datetime" value=@ListOfAdDetails["dbDateOfReg"] class="form-control" id="DateOfRegistration" style="display:table-cell" disabled >
+            </div>
+            <br />
+    
+            <div style="display:table-row">
+                <div style="display:table-cell">
+                  <i class='fas fa-id-card-alt' style='font-size:24px'></i>
+                  <label for="Username" class="form-label" >Username: </label>
+                </div>
+                  <input type="text" value=@ListOfAdDetails["dBUserName"] class="form-control" id="Username" style="display:table-cell" disabled>
+            </div>
+            <br />       
+
+            <div  class="text-center" style="position:relative;left:50%;">
+                <button type="button" onclick=UpdateAdminDetails() class="btn btn-primary" style="display:table-cell">
+                    Update Details
+                    </button>
+                <button type="button" onclick=CancelUpdateDetails() class="btn btn-primary" style="display:table-cell">
+                    Cancel
+                    </button>
+            </div>
+        </div>
+    </div>
+    *@
+    <hr />
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()        
+        <div class="form-horizontal" style="display:table;margin:auto !important;width: 50% !important;border: solid green 3px;padding: 10px;background-color:antiquewhite">        
+            <div class="form-group" style="display:table-row">
+                <div style="width:max-content;margin-left:15px">
+                    <i class='fas fa-id-badge' style='font-size:24px;'></i>
+                    @Html.LabelFor(model => model.AdminID, htmlAttributes: new { @class = "control-label col-md-2", @style = "width:max-content" })
+                </div>
+                <div class="col-md-10" style="display:table-cell">
+                    @Html.EditorFor(model => model.AdminID, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled", @style = "margin-left:40px"} })
+                    @Html.ValidationMessageFor(model => model.AdminID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <br>
+            <div class="form-group" style="display:table-row">
+                <div style="width:max-content;margin-left:15px">
+                    <i class='fas fa-user-alt' style='font-size:24px'></i>
+                    @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2", @style = "width:max-content" })
+                </div>
+                <div class="col-md-10" style="display:table-cell">
+                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled", @style = "margin-left:40px"} })
+                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                </div>          
+            </div>
+            <br>
+            <div class="form-group" style="display:table-row">
+                <div style="width:max-content;margin-left:15px">
+                    <i class='fas fa-user-alt' style='font-size:24px'></i>
+                    @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2", @style = "width:max-content" })
+                </div>
+                <div class="col-md-10" style="display:table-cell">
+                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled", @style = "margin-left:40px"} })
+                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <br>
+            <div class="form-group" style="display:table-row">
+                <div style="width:max-content;margin-left:15px">
+                    <i class='fas fa-user-tag' style='font-size:24px'></i>
+                    @Html.LabelFor(model => model.Designation, htmlAttributes: new { @class = "control-label col-md-2",@style = "width:max-content" })
+                </div>
+                <div class="col-md-10" style="display:table-cell">
+                    @Html.EditorFor(model => model.Designation, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled", @style = "margin-left:40px"} })
+                    @Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <br>
+            <div class="form-group" style="display:table-row">
+                <div style="width:max-content;margin-left:15px">
+                    <i class='far fa-calendar-alt' style='font-size:24px'></i>
+                    @Html.LabelFor(model => model.Age, htmlAttributes: new { @class = "control-label col-md-2",@style = "width:max-content" })
+                </div>
+                <div class="col-md-10" style="display:table-cell">
+                    @Html.EditorFor(model => model.Age, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled", @style = "margin-left:40px"} })
+                    @Html.ValidationMessageFor(model => model.Age, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <br>
+            <div class="form-group" style="display:table-row">
+                <div style="width:max-content;margin-left:15px">
+                    <i class='fas fa-venus-mars' style='font-size:24px'></i>
+                    @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label col-md-2",@style = "width:max-content" })
+                </div>
+                <div class="col-md-10" style="display:table-cell">
+                    @Html.EditorFor(model => model.Gender, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled", @style = "margin-left:40px"} })
+                    @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <br>
+            <div class="form-group" style="display:table-row">
+                <div style="width:max-content;margin-left:15px">
+                    <i class='fas fa-calendar' style='font-size:24px'></i>
+                    @Html.LabelFor(model => model.RegistrationDate, htmlAttributes: new { @class = "control-label col-md-2",@style = "width:max-content" })
+                </div>
+                <div class="col-md-10" style="display:table-cell">
+                    @Html.EditorFor(model => model.RegistrationDate, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled", @style = "margin-left:40px" } })
+                    @Html.ValidationMessageFor(model => model.RegistrationDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <br>
+            <div class="form-group" style="display:table-row">
+                <div style="width:max-content;margin-left:15px">
+                    <i class='fas fa-id-card-alt' style='font-size:24px'></i>
+                    @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2",@style = "width:max-content" })
+                </div>
+                <div class="col-md-10" style="display:table-cell">
+                    @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled", @style = "margin-left:40px" } })
+                    @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <br>
+            <div  class="text-center" style="position:relative;display:flex;left:12em">
+                <button id ="editDetails" type="button" onclick=EditAdminDetails() class="btn btn-primary" style="width:max-content">Edit Details</button>
+                <button id = "updateDetails" type="button" onclick=UpdateAdminDetails() class="btn btn-primary" style="width:max-content;display:none">Update Details</button>
+                <button type="button" onclick=CancelUpdateDetails() class="btn btn-primary" style="margin-left:25px">Cancel</button>
+            </div>            
+         </div>
+    }
+</div>
+
+
+
+
+
+
+
+
+
+<script>
+    function CancelUpdateDetails(){
+        let fname = "var", lname = "gup"        
+        window.location="CancelUpdatingDetails?fname="+fname+"&lname="+lname
+    }
+
+    var count=0
+    function EditAdminDetails(){   
+        document.getElementById('updateDetails').style.display = "block"
+        document.getElementById('editDetails').style.display = "none"
+        document.getElementById('FirstName').disabled = false
+        document.getElementById('LastName').disabled = false
+        document.getElementById('Designation').disabled = false
+        document.getElementById('Age').disabled = false        
+       }
+       
+       function UpdateAdminDetails()
+       {
+           let firstName = document.getElementById('FirstName').value
+           let lastName = document.getElementById('LastName').value
+           let designation = document.getElementById('Designation').value
+           let age = document.getElementById('Age').value
+           let username = document.getElementById('Username').value
+           //DOR is read only       
+           if(IsValidFirstName(firstName) && IsValidLastName(lastName) && IsValidDesignation(designation)){      
+                $.ajax({
+                        url:"UpdateAdminProfile",
+                        method:"POST",
+                        data:
+                        {                            
+                            firstName : firstName,
+                            lastName : lastName,
+                            designation: designation,
+                            age : age,              
+                            username : username
+                            
+                        },
+                        success: function(res)
+                        {
+                           if(res)
+                           {
+                               alert('Admin Details have been updated!')
+                               window.location = "EditAdminProfile"
+                           }
+                        },
+                        fail: function(res)
+                        {
+                       
+                        },
+                })
+            }
+            else{
+                alert('Please use correct format!')
+            }
+       }
+    
+</script>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>

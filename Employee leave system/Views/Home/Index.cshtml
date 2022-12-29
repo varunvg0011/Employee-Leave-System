@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = "_Home_Layout";
+}
+
+
+<div style="display:block;margin-left:40%">
+     <button type="button" onclick=AdminLogin() class="btn btn-primary">Admin Login</button>
+     <button type="button" onclick=EmployeeLogin() class="btn btn-primary">Employee Login</button>
+</div>
+
+<script>
+    function AdminLogin(){
+        window.location = "Admin/AdminLogin"
+    }
+
+    function EmployeeLogin(){
+        window.location = "Employee/EmpLogin"
+    }
+
+</script>

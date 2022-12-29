@@ -1,0 +1,211 @@
+﻿@model Employee_leave_system.Models.EmployeeRegistration
+@{
+    Layout = null;
+}
+
+<div style="background-color:lavender">
+    <div style="padding-top:5%;padding-bottom:5%;">
+        <div style="display:table;background-color:antiquewhite;margin:auto">
+            <div class="form-group" style="display:table-row">
+                <div style="display:table-cell;padding-top:2em;padding-left:1em">
+                    <label class="mb-3" for="LeaveType">Please choose the type of leave you want to apply:</label>
+                </div>
+                <div style="display:table-cell;padding-right:10px">
+                    <select onchange='ShowAvailableLeaveType()' class="form-select form-select-md mb-3" aria-label=".form-select-md" id="LeaveType">
+                        <option selected>Select Type</option>
+                        <option value="CasualLeave">Casual Leaves</option>
+                        <option value="SickLeave">Sick Leaves</option>
+                        <option value="PatternityLeave">Patternity Leaves</option>
+                        <option value="MatternityLeave">Matternity Leaves</option>                   
+                    </select>
+                </div>
+            </div>
+            <div class="form-group" style="display:table-row">
+                <div style="display:table-cell;padding-left:1em">
+                    <label class="mb-3" for="LeaveReason">Reason for Leave:</label>
+                </div>
+                <div style="display:table-cell;padding-right:10px">
+                    <textarea class="form-control form-control-md mb-3" aria-label=".form-select-md" id="LeaveReason" rows="5"></textarea>    
+                </div>
+            </div>
+            <div class="form-group" style="display:table-row">
+                <div style="display:table-cell;padding-left:1em">
+                    <label>Available Balance:</label>
+                </div>
+                <div style="display:table-cell;padding-right:10px">
+                    <input onchange = IfAvailableBalanceIsZero(this) id="AvailableBalance" class="form-control form-control-md mb-3" type="number" aria-label=".form-control-md example"  disabled >
+                </div>
+            </div>
+
+            <div class="form-group" style="display:table-row">
+                <div style="display:table-cell;padding-left:1em">
+                    <label>From Date:</label>
+                </div>
+                <div style="display:table-cell;padding-right:10px">
+                    <input onchange='CountLeavesTaken()' id="FromDate" class="form-control form-control-md mb-3" type="date" aria-label=".form-control-md example" >
+                </div>
+            </div>
+
+            <div class="form-group" style="display:table-row">
+                <div style="display:table-cell;padding-left:1em">
+                    <label>To Date:</label>
+                </div>
+                <div style="display:table-cell;padding-right:10px">
+                    <input onchange='CountLeavesTaken()' id="ToDate" class="form-control form-control-md mb-3" type="date" aria-label=".form-control-md example" >
+                </div>
+            </div>
+
+            <div class="form-group" style="display:table-row">
+                <div style="display:table-cell;padding-left:1em">
+                    <label>Leave Count Requested:</label>
+                </div>
+                <div style="display:table-cell;padding-right:10px">
+                    <input id="LeaveCountDisplay" class="form-control form-control-md mb-3" type="number" aria-label=".form-control-md example"  disabled >
+                </div>
+            </div>
+
+
+            <div class="form-group" style="display:none" id="1DayLeaveType">
+                <div style="display:table-cell;padding-top:2em;padding-left:1em">
+                    <label class="mb-3" for="LeaveType">Please choose the type of leave you want to apply:</label>
+                </div>
+                <div style="display:table-cell;padding-right:10px">
+                    <select class="form-select form-select-md mb-3" aria-label=".form-select-md"  >
+                        <option selected>Select Type of 1 day leave</option>
+                        <option value="FullDay">Full Day Leave</option>
+                        <option value="HalfLeave">Half Day leave Leave</option>                                     
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group" style="display:table-row">
+                <div style="display:table-cell;padding-left:1em">
+                    <label>Return to Date:</label>
+                </div>
+                <div style="display:table-cell;padding-right:10px">
+                    <input id="ReturnToDate" class="form-control form-control-lg mb-3" type="date" aria-label=".form-control-lg example"  disabled >
+                </div>
+            </div>
+
+
+
+            <div style="text-align:center">
+                <button id ="SubmitLeavesBtn" type="button" onclick=SubmitLeaveReq() class="btn btn-primary" style="width:max-content">Apply Leave</button>
+                <button id = "CancelLeavesBtn" type="button" onclick=CancelApplyLeaves() class="btn btn-primary" style="width:max-content;">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    function ShowAvailableLeaveType(){
+        let leaveType = document.getElementById('LeaveType').value
+        
+        $.ajax({
+            url:"GetAvailableLeaves",
+            method:"POST",
+            data:
+            {                            
+                leaveType : leaveType                            
+            },
+            success: function(res)
+            {
+                document.getElementById('AvailableBalance').value = res
+                if(res==0){
+                    document.getElementById('FromDate').disabled = true;
+                    document.getElementById('ToDate').disabled = true;
+                }
+                else{
+                    document.getElementById('FromDate').disabled = false;
+                    document.getElementById('ToDate').disabled = false;
+                }
+            },
+            fail: function(res)
+            {
+                       
+            },
+        })      
+    }
+
+    function CountLeavesTaken()
+    {        
+        let fromDate = document.getElementById('FromDate').value.toLocaleDateString
+        let toDate = document.getElementById('ToDate').value.toLocaleDateString
+        let today = new Date().toLocaleDateString()
+        if(fromDate!='01-01-0001' && toDate!='01-01-0001')
+        {
+            //ajax call to rectify older dates
+            $.ajax({
+                url:"RectifyOlderDates",
+                method:"POST",
+                data:{
+                    fromDate:fromDate,
+                    toDate:toDate
+                },
+                success:function(res){
+                    if(res)
+                    {
+                        $.ajax({
+                            url:"NoOfLeavesTaken",
+                            method:"POST",
+                            success:function(res){
+                                document.getElementById('LeaveCountDisplay').value = res
+                                if(res==1){
+                                    document.getElementById('1DayLeaveType').style.display = "table-row";
+                                }
+                                else{
+                                    document.getElementById('1DayLeaveType').style.display = "none";
+                                }
+                                $.ajax({
+                                    url: "IncrementDate",
+                                    method:"POST",
+                                    data:
+                                    {                                
+                                        toDate:toDate
+                                    },
+                                    success:function(res)
+                                    {                               
+                                        document.getElementById('ReturnToDate').value = res
+                                    },
+                                    fail:function(res)
+                                    {
+                
+                                    },
+                                })
+                            },
+                            failure:function(res){
+
+                            },
+                        })
+                        //2nd ajax call ends here
+                    }
+                    else{
+                        alert('Please choose a date from today or after')
+                    }
+                },                
+                failure:function(res){
+
+                },                
+            })
+          //1st ajax call ends here                   
+        }
+    }
+
+    function CancelApplyLeaves(){
+        window.location = "CancelLeaveRequest"
+    }
+
+    //function SubmitLeaveReq(){
+
+    //}
+    
+</script>
+
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>

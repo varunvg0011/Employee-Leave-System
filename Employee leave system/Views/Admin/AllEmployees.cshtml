@@ -1,0 +1,37 @@
+﻿
+@model IEnumerable<Employee_leave_system.Models.EmployeeRegistration> 
+
+
+<h2 style="text-align:center">Below are all the employees with their details:</h2>
+
+<div class=container>
+    <div class="row justify-content-around">
+        <div class="col-3" style="display:contents">
+            @{
+                foreach (var empRow in Model)
+                {
+                    <div class="card" style="width: 18rem; background-color:beige; align-items:center">
+                      <img src='@empRow.ImgData' style="width:50%;height:20%;border-radius:300px;margin-top:10%;" class="card-img-top" alt="@empRow.Username's image">
+                      <div class="card-body">
+                        <h5 class="card-title">@empRow.Username</h5>
+                        <ul>                            
+                             <li><b>First Name: </b>@empRow.FirstName @empRow.LastName </li>                        
+                             <li><b>Gender: </b>@empRow.Gender</li>
+                             <li><b>Designation: </b>@empRow.Designation</li>
+                             <li><b>Registration Date: </b>@empRow.RegistrationDate.ToString().Split(" ")[0]</li> 
+                             <li><b>Casual Leaves: </b>@empRow.CasualLeaves</li>
+                             <li><b>Sick Leaves: </b>@empRow.SickLeaves</li>
+                             <li><b>Matternity Leaves: </b>@empRow.MatternityLeaves</li>
+                             <li><b>Patternity Leaves: </b>@empRow.PatternityLeaves</li>
+                             
+                             
+                        </ul>
+                      </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+
