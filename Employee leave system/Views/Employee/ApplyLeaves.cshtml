@@ -3,6 +3,18 @@
     Layout = null;
 }
 
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+@*below is jquery for UI. for the usage of datepciker*@
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" ></script>
+@*below is CSS file LIBRARY*@
+<link href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css'rel='stylesheet'>
+
+
+
+
 <div style="background-color:lavender">
     <div style="padding-top:5%;padding-bottom:5%;">
         <div style="display:table;background-color:antiquewhite;margin:auto">
@@ -42,7 +54,7 @@
                     <label>From Date:</label>
                 </div>
                 <div style="display:table-cell;padding-right:10px">
-                    <input onchange='CountLeavesTaken()' id="FromDate" class="form-control form-control-md mb-3" type="date" aria-label=".form-control-md example" >
+                    <input onchange='CountLeavesTaken()' id="FromDate" class="form-control form-control-md mb-3" type="text" aria-label=".form-control-md example" >
                 </div>
             </div>
 
@@ -51,7 +63,7 @@
                     <label>To Date:</label>
                 </div>
                 <div style="display:table-cell;padding-right:10px">
-                    <input onchange='CountLeavesTaken()' id="ToDate" class="form-control form-control-md mb-3" type="date" aria-label=".form-control-md example" >
+                    <input onchange='CountLeavesTaken()' id="ToDate" class="form-control form-control-md mb-3" type="text" aria-label=".form-control-md example" >
                 </div>
             </div>
 
@@ -130,68 +142,76 @@
         })      
     }
 
+    //this ready function loads on page load
+    $(document).ready(function() {
+            $(function() {
+                $( "#FromDate" ).datepicker(
+                    {
+                        dateFormat: 'dd-mm-yy',
+                        defaultDate:new Date(),
+                        minDate:new Date()
+                        
+                    }
+                );
+                $( "#ToDate" ).datepicker(
+                    {
+                        dateFormat: 'dd-mm-yy',
+                        defaultDate:new Date(),
+                        minDate:new Date()
+                    }
+                );
+            });
+        })
+
     function CountLeavesTaken()
     {        
-        let fromDate = document.getElementById('FromDate').value.toLocaleDateString
-        let toDate = document.getElementById('ToDate').value.toLocaleDateString
-        let today = new Date().toLocaleDateString()
-        if(fromDate!='01-01-0001' && toDate!='01-01-0001')
-        {
-            //ajax call to rectify older dates
+        let fromDate = $("#FromDate").datepicker('getDate');
+        let toDate = $("#ToDate").datepicker('getDate');
+        
+        if(fromDate!=null && toDate!=null){
+            fromDate instanceof Date;
+            toDate instanceof Date;
+            fromDateString = fromDate.getFullDate();
+            toDateString = toDate.getFullDate();
             $.ajax({
-                url:"RectifyOlderDates",
-                method:"POST",
-                data:{
-                    fromDate:fromDate,
-                    toDate:toDate
-                },
-                success:function(res){
-                    if(res)
-                    {
+                    url:"NoOfLeavesTaken",
+                    method:"POST",
+                    data:{            
+                            fromDate:fromDate,
+                            toDate:toDate
+                        },
+                    success:function(res){
+                        document.getElementById('LeaveCountDisplay').value = res
+                        if(res==1){
+                            document.getElementById('1DayLeaveType').style.display = "table-row";
+                        }
+                        else{
+                            document.getElementById('1DayLeaveType').style.display = "none";
+                        }
+                        
                         $.ajax({
-                            url:"NoOfLeavesTaken",
+                            url: "IncrementDate",
                             method:"POST",
-                            success:function(res){
-                                document.getElementById('LeaveCountDisplay').value = res
-                                if(res==1){
-                                    document.getElementById('1DayLeaveType').style.display = "table-row";
-                                }
-                                else{
-                                    document.getElementById('1DayLeaveType').style.display = "none";
-                                }
-                                $.ajax({
-                                    url: "IncrementDate",
-                                    method:"POST",
-                                    data:
-                                    {                                
-                                        toDate:toDate
-                                    },
-                                    success:function(res)
-                                    {                               
-                                        document.getElementById('ReturnToDate').value = res
-                                    },
-                                    fail:function(res)
-                                    {
-                
-                                    },
-                                })
+                            data:
+                            {                                
+                                toDate:toDate
                             },
-                            failure:function(res){
-
+                            success:function(res)
+                            {                               
+                                document.getElementById('ReturnToDate').value = res
+                            },
+                            fail:function(res)
+                            {
+                
                             },
                         })
-                        //2nd ajax call ends here
-                    }
-                    else{
-                        alert('Please choose a date from today or after')
-                    }
-                },                
-                failure:function(res){
+                    },
+                    failure:function(res){
 
-                },                
-            })
-          //1st ajax call ends here                   
-        }
+                    },
+                })                        
+                //2nd ajax call ends here
+        }        
     }
 
     function CancelApplyLeaves(){
@@ -206,6 +226,3 @@
 
 
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>

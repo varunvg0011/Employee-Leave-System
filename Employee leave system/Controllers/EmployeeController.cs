@@ -190,7 +190,8 @@ namespace Employee_leave_system.Controllers
 
 
         [HttpPost]
-        public int NoOfLeavesTaken(DateTime toDate, DateTime fromDate)
+        public int NoOfLeavesTaken(DateTime fromDate, DateTime toDate)
+        
         {            
             return (toDate.Date - fromDate.Date).Days+1;
         }
@@ -225,15 +226,7 @@ namespace Employee_leave_system.Controllers
             return returnToDate;
         }
 
-        [HttpPost]
-        public bool RectifyOlderDates(DateTime fromDate, DateTime toDate)
-        {
-            if(fromDate >= DateTime.Today && toDate < DateTime.Today)
-            {
-                return true;
-            }
-            return false;
-        }
+        
 
     }
 }
