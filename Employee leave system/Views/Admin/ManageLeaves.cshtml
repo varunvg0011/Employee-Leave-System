@@ -1,0 +1,62 @@
+﻿@{
+    Layout = null;
+}
+
+@model IEnumerable<Employee_leave_system.Models.AppliedEmployeeLeaves> 
+
+<div style="background-color:lavender">
+    <h2 style="text-align:center">Below are all the required leave requests that you need to manage.</h2>
+
+    <div class=container>
+        <div class="row justify-content-around">
+            <div class="col-3" style="display:contents">
+                @{
+                    foreach (var empLeaveRow in Model)
+                    {
+                        <div class="card" style="width: 20rem; background-color:beige; align-items:center">
+                          <div class="card-body">
+                            <h5 class="card-title">@empLeaveRow.UserId's Leave request:</h5>
+                            <ul>                            
+                                 <li><b>Employee Id: </b>@empLeaveRow.UserId</li>                                               
+                                 <li><b>Type Of Leave: </b>@empLeaveRow.TypeOfLeave</li>
+                                 <li><b>Description: </b>@empLeaveRow.Description</li>
+                                 <li><b>Status: </b>@empLeaveRow.Status</li>                         
+                                 <li><b>DateOfApplication: </b>@empLeaveRow.DateOfApplication.ToString().Split(" ")[0]</li>
+                                 <li><b>Leave From: </b>@empLeaveRow.LeaveFromDt.ToString().Split(" ")[0]</li>
+                                 <li><b>Leave To: </b>@empLeaveRow.LeaveToDt.ToString().Split(" ")[0]</li>                                                         
+                            </ul>
+                          </div>
+                            <div style="text-align:center">
+                                <button  type="button" onclick=AproveLeaves(@empLeaveRow.ApplicationId) class="btn btn-primary" style="width:max-content;">Approve</button>
+                                <button  type="button" onclick=DenyLeave() class="btn btn-primary" style="width:max-content;">Deny</button>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    <br />
+    <br />
+    
+
+</div>
+
+<script>
+    function AproveLeaves(applicationID){
+        //on approval, update status to Approved, decrease the leave count which was applied by the number of days
+        console.log(applicationID)
+    }
+
+    
+
+
+    function DenyLeave(applicationID){
+        
+    }
+
+</script>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>

@@ -23,12 +23,12 @@
                     <label class="mb-3" for="LeaveType">Please choose the type of leave you want to apply:</label>
                 </div>
                 <div style="display:table-cell;padding-right:10px">
-                    <select onchange='ShowAvailableLeaveType()' class="form-select form-select-md mb-3" aria-label=".form-select-md" id="LeaveType">
+                    <select onchange='GetLeaveType()' class="form-select form-select-md mb-3" aria-label=".form-select-md" id="LeaveType">
                         <option selected>Select Type</option>
-                        <option value="CasualLeave">Casual Leaves</option>
-                        <option value="SickLeave">Sick Leaves</option>
-                        <option value="PatternityLeave">Patternity Leaves</option>
-                        <option value="MatternityLeave">Matternity Leaves</option>                   
+                        <option value="casualLeaves">Casual Leaves</option>
+                        <option value="sickLeaves">Sick Leaves</option>
+                        <option value="patternityLeaves">Patternity Leaves</option>
+                        <option value="matternityLeaves">Matternity Leaves</option>                   
                     </select>
                 </div>
             </div>
@@ -54,7 +54,7 @@
                     <label>From Date:</label>
                 </div>
                 <div style="display:table-cell;padding-right:10px">
-                    <input onchange='CountLeavesTaken()' id="FromDate" class="form-control form-control-md mb-3" type="text" aria-label=".form-control-md example" >
+                    <input onchange='CountLeavesTaken()' id="FromDate" class="form-control form-control-md mb-3" type="text" aria-label=".form-control-md example" readonly >
                 </div>
             </div>
 
@@ -63,7 +63,7 @@
                     <label>To Date:</label>
                 </div>
                 <div style="display:table-cell;padding-right:10px">
-                    <input onchange='CountLeavesTaken()' id="ToDate" class="form-control form-control-md mb-3" type="text" aria-label=".form-control-md example" >
+                    <input onchange='CountLeavesTaken()' id="ToDate" class="form-control form-control-md mb-3" type="text" aria-label=".form-control-md example" readonly>
                 </div>
             </div>
 
@@ -82,11 +82,12 @@
                     <label class="mb-3" for="LeaveType">Please choose the type of leave you want to apply:</label>
                 </div>
                 <div style="display:table-cell;padding-right:10px">
-                    <select class="form-select form-select-md mb-3" aria-label=".form-select-md"  >
+                    @*<select class="form-select form-select-md mb-3" aria-label=".form-select-md"  >
                         <option selected>Select Type of 1 day leave</option>
                         <option value="FullDay">Full Day Leave</option>
-                        <option value="HalfLeave">Half Day leave Leave</option>                                     
-                    </select>
+                        <option value="HalfLeave">Half Day leave</option>                                     
+                    </select>*@
+                    <input value="Full Day Leave" id="1DayLeaveType" class="form-control form-control-md mb-3" type="text" aria-label=".form-control-md example"  disabled >
                 </div>
             </div>
 
@@ -95,7 +96,7 @@
                     <label>Return to Date:</label>
                 </div>
                 <div style="display:table-cell;padding-right:10px">
-                    <input id="ReturnToDate" class="form-control form-control-lg mb-3" type="date" aria-label=".form-control-lg example"  disabled >
+                    <input id="ReturnToDate" class="form-control form-control-lg mb-3" type="text" aria-label=".form-control-lg example"  disabled >
                 </div>
             </div>
 
@@ -113,27 +114,49 @@
 
 
 <script>
-    function ShowAvailableLeaveType(){
+    var empDetails = {};
+    var availableLeaves;
+    function GetLeaveType(){
         let leaveType = document.getElementById('LeaveType').value
-        
+        if(leaveType=="casualLeaves"){
+            availableLeaves = empDetails["casualLeaves"]            
+        }
+        else if(leaveType=="sickLeaves"){
+            availableLeaves = empDetails["sickLeaves"]           
+        }
+        else if(leaveType=="patternityLeaves"){
+            availableLeaves = empDetails["patternityLeaves"]
+        }
+        else if(leaveType=="matternityLeaves"){
+            availableLeaves = empDetails["matternityLeaves"]
+        }
+        else{
+            availableLeaves = ""
+        }
+        document.getElementById('AvailableBalance').value = availableLeaves
+        if(availableLeaves==0){
+            document.getElementById('FromDate').disabled = true;
+            document.getElementById('ToDate').disabled = true;
+        }
+        else{
+            document.getElementById('FromDate').disabled = false;
+            document.getElementById('ToDate').disabled = false;
+        }
+    }
+
+
+    function ShowAvailableLeaveType(){       
         $.ajax({
             url:"GetAvailableLeaves",
-            method:"POST",
+            method:"GET",
             data:
             {                            
-                leaveType : leaveType                            
+                            
             },
             success: function(res)
             {
-                document.getElementById('AvailableBalance').value = res
-                if(res==0){
-                    document.getElementById('FromDate').disabled = true;
-                    document.getElementById('ToDate').disabled = true;
-                }
-                else{
-                    document.getElementById('FromDate').disabled = false;
-                    document.getElementById('ToDate').disabled = false;
-                }
+                empDetails = res
+                
             },
             fail: function(res)
             {
@@ -144,11 +167,12 @@
 
     //this ready function loads on page load
     $(document).ready(function() {
+        ShowAvailableLeaveType();
             $(function() {
                 $( "#FromDate" ).datepicker(
                     {
                         dateFormat: 'dd-mm-yy',
-                        defaultDate:new Date(),
+                        //defaultDate:new Date(),
                         minDate:new Date()
                         
                     }
@@ -156,7 +180,7 @@
                 $( "#ToDate" ).datepicker(
                     {
                         dateFormat: 'dd-mm-yy',
-                        defaultDate:new Date(),
+                        //defaultDate:new Date(),
                         minDate:new Date()
                     }
                 );
@@ -165,25 +189,38 @@
 
     function CountLeavesTaken()
     {        
-        let fromDate = $("#FromDate").datepicker('getDate');
-        let toDate = $("#ToDate").datepicker('getDate');
+        let fromDate = $("#FromDate").datepicker('getDate')
+        let toDate = $("#ToDate").datepicker('getDate')
+        
         
         if(fromDate!=null && toDate!=null){
-            fromDate instanceof Date;
-            toDate instanceof Date;
-            fromDateString = fromDate.getFullDate();
-            toDateString = toDate.getFullDate();
+            let fromDt = document.getElementById('FromDate').value
+            let toDt = document.getElementById('ToDate').value
+            //fromDate instanceof Date;
+            //toDate instanceof Date;
+            //let fromDateGetDate = fromDate.getDate();
+            //let toDateGetDate = toDate.getDate();
+            //let fromDateGetMonth = fromDate.getMonth();
+            //let toDateGetMonth = toDate.getMonth();
+            //let fromDateGetYear = fromDate.getFullYear();
+            //let toDateGetYear = toDate.getFullYear();
+
+            //let fromDateString = fromDateGetDate+"-"+fromDateGetMonth+"-"+fromDateGetYear
+            //let toDateString = toDateGetDate+"-"+toDateGetMonth+"-"+toDateGetYear
+            //fromDateString instanceof Date;
+            //toDateString instanceof Date;
             $.ajax({
                     url:"NoOfLeavesTaken",
                     method:"POST",
                     data:{            
-                            fromDate:fromDate,
-                            toDate:toDate
+                            fromDate:fromDt,
+                            toDate:toDt
                         },
                     success:function(res){
                         document.getElementById('LeaveCountDisplay').value = res
                         if(res==1){
                             document.getElementById('1DayLeaveType').style.display = "table-row";
+                            
                         }
                         else{
                             document.getElementById('1DayLeaveType').style.display = "none";
@@ -194,11 +231,12 @@
                             method:"POST",
                             data:
                             {                                
-                                toDate:toDate
+                                toDate:toDt
                             },
                             success:function(res)
                             {                               
                                 document.getElementById('ReturnToDate').value = res
+                                
                             },
                             fail:function(res)
                             {
@@ -211,16 +249,58 @@
                     },
                 })                        
                 //2nd ajax call ends here
-        }        
+        }
+
+
+        
     }
 
     function CancelApplyLeaves(){
         window.location = "CancelLeaveRequest"
     }
 
-    //function SubmitLeaveReq(){
+    function SubmitLeaveReq(){
+        let fromDateDatePicker = $("#FromDate").datepicker('getDate')
+        let toDateDatePicker = $("#ToDate").datepicker('getDate')
 
-    //}
+        let fromDt = document.getElementById('FromDate').value
+        let toDt = document.getElementById('ToDate').value
+        let leaveReason = document.getElementById('LeaveReason').value
+        let availableLeaveBalance = document.getElementById('AvailableBalance').value
+        let noOfLeavesApplied = document.getElementById('LeaveCountDisplay').value
+        let returnToDate = document.getElementById('ReturnToDate').value
+        let leaveType = document.getElementById('LeaveType').value
+        if(fromDateDatePicker!=null && toDateDatePicker!=null && leaveReason!="Select Type" && availableBal!=null && returnToDate!=null && leaveType!=null)
+        {           
+            $.ajax({
+                url:"SubmitLeaveRequest",
+                method:"POST",
+                data:{
+                    leaveType:leaveType,
+                    leaveReason:leaveReason,
+                    fromDt:fromDt,
+                    toDt:toDt,
+                    
+                },
+                success:function(res){
+                    if(res){
+                        alert("Leave Request has been submitted!")
+                        window.location='EmployeeDashboard'
+
+                    }
+                    else{
+                        alert("Please try submitting your request again. If it fails again, please contact application team.")
+                    }
+                },
+                failure:function(res){
+                
+                },          
+            })
+        }  
+        else{
+            alert("Pleae fill all Leave application details before clicking on apply!")
+        }
+    }
     
 </script>
 

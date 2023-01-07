@@ -160,6 +160,30 @@ namespace Employee_leave_system
             return false;
         }
 
+
+        public bool SubmitLeaveRequestData(int empID, string leaveType,string leaveReason,DateTime fromDt, DateTime toDt)
+        {
+            SqlConnection conEmpInsertLeaveRequest = GetConnectionString();
+            SqlCommand cmdEmpInsertLeaveRequest = new SqlCommand("execute SP_InsertEmpLeaveRequest @UserId, @TypeOfLeave, @Description, @Status, @DateOfApplication, @LeaveFromDt, @LeaveToDt", conEmpInsertLeaveRequest);
+            conEmpInsertLeaveRequest.Open();
+
+            cmdEmpInsertLeaveRequest.Parameters.AddWithValue("@UserId", empID.ToString());
+            cmdEmpInsertLeaveRequest.Parameters.AddWithValue("@TypeOfLeave", leaveType);
+            cmdEmpInsertLeaveRequest.Parameters.AddWithValue("@Description", leaveReason);
+            cmdEmpInsertLeaveRequest.Parameters.AddWithValue("@Status", "Pending");
+            cmdEmpInsertLeaveRequest.Parameters.AddWithValue("@DateOfApplication", DateTime.Today);
+            cmdEmpInsertLeaveRequest.Parameters.AddWithValue("@LeaveFromDt", fromDt);
+            cmdEmpInsertLeaveRequest.Parameters.AddWithValue("@LeaveToDt", toDt);
+            int noOfRowsUpdated = cmdEmpInsertLeaveRequest.ExecuteNonQuery();
+            conEmpInsertLeaveRequest.Close();
+            if (noOfRowsUpdated > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+
         public SqlConnection GetConnectionString()
         {
             SqlConnection getCon = new SqlConnection("Data Source=localhost;Initial Catalog=Emp_Leave_System;Integrated Security=True");

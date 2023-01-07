@@ -11,6 +11,7 @@ namespace Employee_leave_system.Controllers
     public class AdminController : Controller
     {
         public FetchDataFromSQL fetchObj { get; set; } = new FetchDataFromSQL();
+        public FetchEmpDataFromSQL fetchEmpObj { get; set; } = new FetchEmpDataFromSQL();
         public IActionResult AdminLogin()
         {           
             return View();
@@ -155,11 +156,19 @@ namespace Employee_leave_system.Controllers
         {
             return View();
         }
+
+        EmployeeController empObj = new EmployeeController();
         
-        
-        
+        public IActionResult ManageLeaves()
+        {
+            
+            List<AppliedEmployeeLeaves> leaveDetailsObj = fetchObj.GetAllEmpLeaveDetails();
+             //fetchObj.GetAllEmpLeaveRequests();
+             
+            return View(leaveDetailsObj);
+        }
 
 
-        
+
     }
 }

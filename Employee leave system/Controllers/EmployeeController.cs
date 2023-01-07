@@ -162,30 +162,16 @@ namespace Employee_leave_system.Controllers
             return View(empDetailsList);
         }
 
-        [HttpPost]
-        public int GetAvailableLeaves(string leaveType)
+        [HttpGet]
+        public EmployeeRegistration GetAvailableLeaves()
         {
             string empUsername = HttpContext.Session.GetString("Username");
             
             EmployeeRegistration empDetailsList = new EmployeeRegistration();
             empDetailsList = fetchEmpObj.GetAllEmpDetails(empUsername);
-            if (leaveType.ToUpper() == "CASUALLEAVE")
-            {
-                return empDetailsList.CasualLeaves;
-            }
-            else if(leaveType.ToUpper() == "SICKLEAVE")
-            {
-                return empDetailsList.SickLeaves;
-            }
-            else if(leaveType.ToUpper() == "PATTERNITYLEAVE")
-            {
-                return empDetailsList.PatternityLeaves;
-            }
-            else /*if(leaveType == "MATTERNITYLEAVE")*/
-            {
-                return empDetailsList.MatternityLeaves;
-            }
-            
+            return empDetailsList;
+
+
         }
 
 
@@ -223,10 +209,27 @@ namespace Employee_leave_system.Controllers
         public string IncrementDate(DateTime toDate)
         {
             var returnToDate = toDate.AddDays(1).ToString().Split(' ')[0];
+            var toDateDayOfWeek = toDate.DayOfWeek.ToString();
+            if (toDateDayOfWeek == "Friday")
+            {
+                return toDate.AddDays(3).ToString().Split(' ')[0];
+            }
             return returnToDate;
         }
 
-        
+        public bool SubmitLeaveRequest(string leaveType, string leaveReason, DateTime fromDt, DateTime toDt)
+        {
+            string empUsername = HttpContext.Session.GetString("Username");           
+            EmployeeRegistration empDetailsList = new EmployeeRegistration();
+            empDetailsList = fetchEmpObj.GetAllEmpDetails(empUsername);
+            int empID = empDetailsList.EmpID;
+            var isLeaveRequestSubmitted = fetchEmpObj.SubmitLeaveRequestData(empID, leaveType, leaveReason, fromDt, toDt);
+            if (isLeaveRequestSubmitted)
+            {
+                return true;
+            }
+            return false;
+        }
 
     }
 }

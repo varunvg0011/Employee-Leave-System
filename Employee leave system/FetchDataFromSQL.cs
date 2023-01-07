@@ -145,6 +145,39 @@ namespace Employee_leave_system
             return AllEmployeesList;
         }
 
+        public List<AppliedEmployeeLeaves> GetAllEmpLeaveDetails()
+        {
+            List<AppliedEmployeeLeaves> allEmpLeaves = new List<AppliedEmployeeLeaves>();
+            SqlConnection conGetAllEmpLeaves = GetConnectionString();
+            SqlCommand cmdGetAllEmpLeaves = new SqlCommand("SP_GetAllEmpLeaves", conGetAllEmpLeaves);
+            cmdGetAllEmpLeaves.CommandType = System.Data.CommandType.StoredProcedure;
+            conGetAllEmpLeaves.Open();
+            SqlDataAdapter sqlDataget = new SqlDataAdapter(cmdGetAllEmpLeaves);
+            DataTable dataTableObj = new DataTable();
+            sqlDataget.Fill(dataTableObj);
+            conGetAllEmpLeaves.Close();
+            foreach (DataRow empLeaveReq in dataTableObj.Rows)
+            {
+                AppliedEmployeeLeaves empLeaveRequests = new AppliedEmployeeLeaves();
+                empLeaveRequests.UserId = Convert.ToInt16(empLeaveReq["UserId"]);
+                empLeaveRequests.ApplicationId = Convert.ToInt16(empLeaveReq["ApplicationId"]);
+                empLeaveRequests.TypeOfLeave = empLeaveReq["TypeOfLeave"].ToString();
+                empLeaveRequests.Description = empLeaveReq["Description"].ToString();
+                empLeaveRequests.Status = "Pending";
+                empLeaveRequests.DateOfApplication = Convert.ToDateTime(empLeaveReq["DateOfApplication"]);
+                empLeaveRequests.LeaveFromDt = Convert.ToDateTime(empLeaveReq["LeaveFromDt"]);
+                empLeaveRequests.LeaveToDt = Convert.ToDateTime(empLeaveReq["LeaveToDt"]);
+
+
+
+                allEmpLeaves.Add(empLeaveRequests);
+            }
+            return allEmpLeaves;
+        }
+
+
+
+
 
         public bool UpdateAdminDetails(string firstName, string lastName, int age, string designation, string username)
         {
