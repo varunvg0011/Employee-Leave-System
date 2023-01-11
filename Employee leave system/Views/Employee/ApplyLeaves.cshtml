@@ -119,16 +119,16 @@
     function GetLeaveType(){
         let leaveType = document.getElementById('LeaveType').value
         if(leaveType=="casualLeaves"){
-            availableLeaves = empDetails["casualLeaves"]            
+            availableLeaves = empDetails.casualLeaves           
         }
         else if(leaveType=="sickLeaves"){
-            availableLeaves = empDetails["sickLeaves"]           
+            availableLeaves = empDetails.sickLeaves        
         }
         else if(leaveType=="patternityLeaves"){
-            availableLeaves = empDetails["patternityLeaves"]
+            availableLeaves = empDetails.patternityLeaves
         }
         else if(leaveType=="matternityLeaves"){
-            availableLeaves = empDetails["matternityLeaves"]
+            availableLeaves = empDetails.matternityLeaves
         }
         else{
             availableLeaves = ""
@@ -270,7 +270,8 @@
         let noOfLeavesApplied = document.getElementById('LeaveCountDisplay').value
         let returnToDate = document.getElementById('ReturnToDate').value
         let leaveType = document.getElementById('LeaveType').value
-        if(fromDateDatePicker!=null && toDateDatePicker!=null && leaveReason!="Select Type" && availableBal!=null && returnToDate!=null && leaveType!=null)
+        let empId = empDetails.empID
+        if(fromDateDatePicker!=null && toDateDatePicker!=null && leaveReason!="Select Type" && availableLeaveBalance!=null && returnToDate!=null && leaveType!=null && leaveReason!=null)
         {           
             $.ajax({
                 url:"SubmitLeaveRequest",
@@ -280,17 +281,12 @@
                     leaveReason:leaveReason,
                     fromDt:fromDt,
                     toDt:toDt,
+                    empId:empId
                     
                 },
                 success:function(res){
-                    if(res){
-                        alert("Leave Request has been submitted!")
-                        window.location='EmployeeDashboard'
-
-                    }
-                    else{
-                        alert("Please try submitting your request again. If it fails again, please contact application team.")
-                    }
+                    alert(res)
+                    window.location='EmployeeDashboard'
                 },
                 failure:function(res){
                 

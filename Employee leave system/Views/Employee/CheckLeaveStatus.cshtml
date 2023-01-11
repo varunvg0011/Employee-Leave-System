@@ -5,7 +5,7 @@
 @model IEnumerable<Employee_leave_system.Models.AppliedEmployeeLeaves> 
 
 <div style="background-color:lavender">
-    <h2 style="text-align:center">Below are all the required leave requests that you need to manage.</h2>
+    <h2 style="text-align:center">Below are all the leave requests that you have applied.</h2>
 
     <div class=container>
         <div class="row justify-content-around">
@@ -15,7 +15,7 @@
                     {
                         <div class="card" style="width: 20rem; background-color:beige; align-items:center">
                           <div class="card-body">
-                            <h5 class="card-title">@empLeaveRow.UserId's Leave request:</h5>
+                            <h5 class="card-title">Leave request:</h5>
                             <div>     
                                 <div id="empUserID" >
                                     <b>Employee Id: </b>@empLeaveRow.UserId
@@ -41,10 +41,7 @@
                                                                                         
                             </div>
                           </div>
-                            <div style="text-align:center">
-                                <button  type="button" onclick=AproveLeaves(@empLeaveRow.ApplicationId) class="btn btn-primary" style="width:max-content;">Approve</button>
-                                <button  type="button" onclick=DenyLeave() class="btn btn-primary" style="width:max-content;">Deny</button>
-                            </div>
+                            
                         </div>
                     }
                 }
@@ -57,67 +54,6 @@
 
 </div>
 
-<script>
-    function AproveLeaves(applicationID){
-        //on approval, update status to Approved, decrease the leave count which was applied by the number of days.
-        //make a page for employee to see his denied/applied Leaves
-        
-        if(confirm('Are you sure you want to approve leave for application ID' + applicationID))
-        {
-            $.ajax({
-                url:"ApproveEmpLeave",
-                method:"POST",
-                data:{
-                
-                    applicationID:applicationID
-                
-                },
-                success:function(res){
-                    if(res){
-                        alert('Leave has been approved!')
-                        window.location='AllEmployees'
-                    }
-                    else{
-                        alert('There is some issue occuring with approving this leave, please contact the administrator.')
-                    }
-                },
-                failure:function(res){
-
-                },
-            })
-        }
-        
-    }
-
-    
-
-
-    function DenyLeave(applicationID){
-        //just update the status as denied
-        $.ajax({
-                url:"DenyEmpLeave",
-                method:"POST",
-                data:{
-                
-                    applicationID:applicationID
-                
-                },
-                success:function(res){
-                    if(res){
-                        alert('Leave has been Denied!')
-                        window.location='AllEmployees'
-                    }
-                    else{
-                        alert('There is some issue occuring with denying this leave, please contact the administrator.')
-                    }
-                },
-                failure:function(res){
-
-                },
-            })
-    }
-
-</script>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

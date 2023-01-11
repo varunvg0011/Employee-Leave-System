@@ -10,6 +10,7 @@ namespace Employee_leave_system.Controllers
     
     public class AdminController : Controller
     {
+        EmployeeController empControllerObj = new EmployeeController();
         public FetchDataFromSQL fetchObj { get; set; } = new FetchDataFromSQL();
         public FetchEmpDataFromSQL fetchEmpObj { get; set; } = new FetchEmpDataFromSQL();
         public IActionResult AdminLogin()
@@ -161,14 +162,54 @@ namespace Employee_leave_system.Controllers
         
         public IActionResult ManageLeaves()
         {
+                        
+            List<AppliedEmployeeLeaves> leaveDetailsObj = fetchObj.GetEmpPendingLeaveDetails();
             
-            List<AppliedEmployeeLeaves> leaveDetailsObj = fetchObj.GetAllEmpLeaveDetails();
              //fetchObj.GetAllEmpLeaveRequests();
-             
+            //foreach(var empLeaveRow in leaveDetailsObj)
+            //{
+
+            //    var empUserID = fetchObj.getEachEmployeeUserName(empLeaveRow.UserId);
+            //    ViewData[empLeaveRow.UserId] = empUserID
+            //}
             return View(leaveDetailsObj);
         }
 
+        public bool ApproveEmpLeave(int applicationID)
+        {
+            Dictionary<string, object> allEmpDetails = fetchObj.GetAllEmpLeaveDetails(applicationID);
+            DateTime fromDate = Convert.ToDateTime(allEmpDetails["leaveFromDt"]);
+            DateTime toDate = Convert.ToDateTime(allEmpDetails["leaveToDt"]);
+            int empId = Convert.ToInt16(allEmpDetails["userId"]);
 
+
+            string typeOfLeaveApplied = (fetchObj.GetTypeOfLeave(applicationID));
+            bool isLeaveApproved = fetchObj.IsLeaveApproved(applicationID);
+            int leaveDays = Convert.ToInt16((toDate - fromDate).TotalDays) + 1;
+            if (isLeaveApproved && typeOfLeaveApplied!=string.Empty)
+            {
+                //decrease the leave count acc. to which type leave was applied
+                bool decrementingLeaveCount = fetchObj.DecrementLeaveCount(typeOfLeaveApplied, empId, leaveDays);
+                if (decrementingLeaveCount)
+                {
+                    return true;
+                }                
+            }
+            return false;
+        }
+
+        public bool DenyEmpLeave(int applicationId)
+        {
+            bool isLeaveDenied = fetchObj.DenyEmpLeave(applicationId);
+            if (isLeaveDenied)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
     }
 }

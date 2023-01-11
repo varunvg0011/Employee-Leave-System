@@ -34,7 +34,7 @@ namespace Employee_leave_system.Controllers
                     //never store unnecessary data in Session
                     //never store password as its of no use to be used in other controllers
                     //HttpContext.Session.SetString("adminPass", adminObj.Password);
-                    if (CheckAdminPasswordInDB(empLoginObj))
+                    if (CheckEmpPasswordInDB(empLoginObj))
                     {
                         if (empLoginObj.RememberMe)
                         {
@@ -88,7 +88,7 @@ namespace Employee_leave_system.Controllers
         }
 
 
-        public bool CheckAdminPasswordInDB(EmpLogin empLoginObj)
+        public bool CheckEmpPasswordInDB(EmpLogin empLoginObj)
         {
             if (fetchEmpObj.CheckPasswordInDB(empLoginObj))
             {
@@ -217,19 +217,35 @@ namespace Employee_leave_system.Controllers
             return returnToDate;
         }
 
-        public bool SubmitLeaveRequest(string leaveType, string leaveReason, DateTime fromDt, DateTime toDt)
+        public string SubmitLeaveRequest(string leaveType, string leaveReason, DateTime fromDt, DateTime toDt,int empId)
         {
             string empUsername = HttpContext.Session.GetString("Username");           
             EmployeeRegistration empDetailsList = new EmployeeRegistration();
             empDetailsList = fetchEmpObj.GetAllEmpDetails(empUsername);
-            int empID = empDetailsList.EmpID;
-            var isLeaveRequestSubmitted = fetchEmpObj.SubmitLeaveRequestData(empID, leaveType, leaveReason, fromDt, toDt);
-            if (isLeaveRequestSubmitted)
+            
+            int NoOfLeaveDaysApplied = NoOfLeavesTaken(fromDt, toDt);
+            bool isLeaveRequestSubmitted = fetchEmpObj.SubmitLeaveRequestData(empId, leaveType, leaveReason, fromDt, toDt);
+            bool CheckAvailableLeaveCount = fetchEmpObj.CheckAvailableLeaveCount(empId, leaveType, NoOfLeaveDaysApplied);
+            if (CheckAvailableLeaveCount)
             {
-                return true;
+                if (isLeaveRequestSubmitted)
+                {
+                    return "Leave request submitted!";
+                }
             }
-            return false;
+            return "Not enough leave balance available for the requested leave type! Please enter valid no. of leave request days.";
         }
+
+
+        public IActionResult CheckLeaveStatus()
+        {
+            string empUsername = HttpContext.Session.GetString("Username");
+            EmployeeRegistration empDetailsList = new EmployeeRegistration();
+            empDetailsList = fetchEmpObj.GetAllEmpDetails(empUsername);
+            List<AppliedEmployeeLeaves> AllEmpLeaves = fetchEmpObj.GetAllEmpLeaves(empDetailsList.EmpID);
+            return View(AllEmpLeaves);
+        }
+
 
     }
 }

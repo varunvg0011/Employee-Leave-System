@@ -145,11 +145,11 @@ namespace Employee_leave_system
             return AllEmployeesList;
         }
 
-        public List<AppliedEmployeeLeaves> GetAllEmpLeaveDetails()
+        public List<AppliedEmployeeLeaves> GetEmpPendingLeaveDetails()
         {
             List<AppliedEmployeeLeaves> allEmpLeaves = new List<AppliedEmployeeLeaves>();
             SqlConnection conGetAllEmpLeaves = GetConnectionString();
-            SqlCommand cmdGetAllEmpLeaves = new SqlCommand("SP_GetAllEmpLeaves", conGetAllEmpLeaves);
+            SqlCommand cmdGetAllEmpLeaves = new SqlCommand("SP_GetAllEmpPendingLeaves", conGetAllEmpLeaves);
             cmdGetAllEmpLeaves.CommandType = System.Data.CommandType.StoredProcedure;
             conGetAllEmpLeaves.Open();
             SqlDataAdapter sqlDataget = new SqlDataAdapter(cmdGetAllEmpLeaves);
@@ -219,6 +219,153 @@ namespace Employee_leave_system
             int moOfRowsInserted = cmdAddEmpToDB.ExecuteNonQuery();
             conAddEmpToDB.Close();
             if (moOfRowsInserted > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool IsLeaveApproved(int applicationID)
+        {
+            SqlConnection conApproveLeave = GetConnectionString();
+            SqlCommand cmdApproveLeave = new SqlCommand("execute SP_ApproveLeave @ApplicationId", conApproveLeave);
+            conApproveLeave.Open();
+            cmdApproveLeave.Parameters.AddWithValue("@ApplicationId", applicationID);
+            int numberOfRowsAffected = cmdApproveLeave.ExecuteNonQuery();
+            if (numberOfRowsAffected > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public string GetTypeOfLeave(int applicationID)
+        {
+            string TypeOfLeave = String.Empty;
+            SqlConnection conGetTypeOfLeave = GetConnectionString();
+            SqlCommand cmdGetTypeOfLeave = new SqlCommand("select TypeOfLeave from LeaveDetails where ApplicationId=@ApplicationId", conGetTypeOfLeave);
+            conGetTypeOfLeave.Open();
+            cmdGetTypeOfLeave.Parameters.AddWithValue("@ApplicationId", applicationID);
+            SqlDataReader readTypeOfLeave = cmdGetTypeOfLeave.ExecuteReader();
+            if (readTypeOfLeave.HasRows)
+            {
+                while (readTypeOfLeave.Read())
+                {
+                    TypeOfLeave = Convert.ToString(readTypeOfLeave["TypeOfLeave"]);
+                    conGetTypeOfLeave.Close();
+                    return TypeOfLeave;
+                }                                
+            }
+            return TypeOfLeave;
+        }
+
+
+        public bool DecrementLeaveCount(string typeOfLeaveApplied, int empId, int leaveDays)
+        {
+            string readLeaveCountQuery = string.Empty;
+            string WriteLeaveCountQuery = string.Empty;
+            int getLeaveCount=0,setLeaveCount=0;
+
+            if (typeOfLeaveApplied == "SickLeave" || typeOfLeaveApplied == "SickLeaves")
+            {
+                readLeaveCountQuery = "select SickLeaves from EmployeeRegData where EmpId = @EmpId";
+                WriteLeaveCountQuery = "UPDATE EmployeeRegData SET SickLeaves = @SetLeaveCount where EmpId = @EmpId";
+            }
+            else if (typeOfLeaveApplied == "PatternityLeave" || typeOfLeaveApplied == "PatternityLeaves")
+            {
+                readLeaveCountQuery = "select PatternityLeaves from EmployeeRegData where EmpId = @EmpId";
+                WriteLeaveCountQuery = "UPDATE EmployeeRegData SET PatternityLeaves = @SetLeaveCount where EmpId = @EmpId";
+            }
+            else if (typeOfLeaveApplied == "CasualLeave" || typeOfLeaveApplied == "CasualLeaves")
+            {
+                readLeaveCountQuery = "select CasualLeaves from EmployeeRegData where EmpId = @EmpId";
+                WriteLeaveCountQuery = "UPDATE EmployeeRegData SET CasualLeaves = @SetLeaveCount where EmpId = @EmpId";
+            }
+            else if (typeOfLeaveApplied == "MatternityLeave" || typeOfLeaveApplied == "MatternityLeaves")
+            {
+                readLeaveCountQuery = "select MatternityLeaves from EmployeeRegData where EmpId = @EmpId";
+                WriteLeaveCountQuery = "UPDATE EmployeeRegData SET MatternityLeaves = @SetLeaveCount where EmpId = @EmpId";
+            }
+            SqlConnection conReadLeaveCount = GetConnectionString();
+            SqlCommand cmdReadLeaveCount = new SqlCommand(readLeaveCountQuery, conReadLeaveCount);
+            conReadLeaveCount.Open();
+            cmdReadLeaveCount.Parameters.AddWithValue("@EmpId", empId);
+            SqlDataReader readTypeOfLeave = cmdReadLeaveCount.ExecuteReader();
+            if (readTypeOfLeave.HasRows)
+            {
+                while (readTypeOfLeave.Read())
+                {
+                    getLeaveCount = Convert.ToInt16(readTypeOfLeave[0]);
+                    
+                }
+                conReadLeaveCount.Close();
+            }
+            setLeaveCount = getLeaveCount - leaveDays;
+            
+            SqlConnection conWriteLeaveCount = GetConnectionString();
+            SqlCommand cmdWriteLeaveCount = new SqlCommand(WriteLeaveCountQuery, conWriteLeaveCount);
+            conWriteLeaveCount.Open();
+            cmdWriteLeaveCount.Parameters.AddWithValue("@EmpId", empId);
+            cmdWriteLeaveCount.Parameters.AddWithValue("@SetLeaveCount", setLeaveCount);
+            int noOfRowsAffected = cmdWriteLeaveCount.ExecuteNonQuery();
+            if (noOfRowsAffected > 0)
+            {
+                return true;
+            }
+            return false;
+
+        }
+
+
+
+        public Dictionary<string,object> GetAllEmpLeaveDetails(int applicationID)
+        {
+            string typeOfLeave=string.Empty, description=string.Empty, status = string.Empty;
+            int userId;
+            DateTime dateOfApplication, leaveFromDt, leaveToDt;
+
+            Dictionary<string, object> EmpLeaveDetails = new Dictionary<string, object>();
+            
+            SqlConnection conGetLeaveDetails = GetConnectionString();
+            SqlCommand cmdGetLeaveDetails = new SqlCommand("select * from LeaveDetails where ApplicationId=@ApplicationId", conGetLeaveDetails);
+            conGetLeaveDetails.Open();
+            cmdGetLeaveDetails.Parameters.AddWithValue("@ApplicationId", applicationID);
+            
+            SqlDataReader readTypeOfLeave = cmdGetLeaveDetails.ExecuteReader();
+            if (readTypeOfLeave.HasRows)
+            {
+                while (readTypeOfLeave.Read())
+                {
+                    userId = Convert.ToInt16(readTypeOfLeave["UserId"]);
+                    description = Convert.ToString(readTypeOfLeave["Description"]);
+                    status = Convert.ToString(readTypeOfLeave["Status"]);
+                    dateOfApplication = Convert.ToDateTime(readTypeOfLeave["DateOfApplication"]);
+                    leaveFromDt = Convert.ToDateTime(readTypeOfLeave["LeaveFromDt"]);
+                    leaveToDt = Convert.ToDateTime(readTypeOfLeave["LeaveToDt"]);
+
+                    conGetLeaveDetails.Close();
+                    EmpLeaveDetails.Add("userId", userId);
+                    EmpLeaveDetails.Add("description", description);
+                    EmpLeaveDetails.Add("status", status);
+                    EmpLeaveDetails.Add("dateOfApplication", dateOfApplication);
+                    EmpLeaveDetails.Add("leaveFromDt", leaveFromDt);
+                    EmpLeaveDetails.Add("leaveToDt", leaveToDt);
+                    return EmpLeaveDetails;
+
+                }
+            }
+            return EmpLeaveDetails;
+        }
+
+
+        public bool DenyEmpLeave(int applicationID)
+        {
+            SqlConnection conDenyLeave = GetConnectionString();
+            SqlCommand cmdDeniedLeave = new SqlCommand("execute SP_DenyLeave @ApplicationId", conDenyLeave);
+            conDenyLeave.Open();
+            cmdDeniedLeave.Parameters.AddWithValue("@ApplicationId", applicationID);
+            int numberOfRowsAffected = cmdDeniedLeave.ExecuteNonQuery();
+            if (numberOfRowsAffected > 0)
             {
                 return true;
             }

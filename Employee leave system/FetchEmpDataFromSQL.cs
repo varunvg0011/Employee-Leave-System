@@ -184,6 +184,81 @@ namespace Employee_leave_system
         }
 
 
+        public bool CheckAvailableLeaveCount(int empId, string leaveType, int NoOfLeaveDaysApplied)
+        {
+            
+            string readLeaveCountQuery = String.Empty;
+            if (leaveType == "sickLeaves")
+            {
+                readLeaveCountQuery = "select SickLeaves from EmployeeRegData where EmpId=@empId";
+            }
+            else if (leaveType == "patternityLeaves")
+            {
+                readLeaveCountQuery = "select PatternityLeaves from EmployeeRegData where EmpId=@empId";
+            }
+            else if (leaveType == "casualLeaves")
+            {
+                readLeaveCountQuery = "select CasualLeaves from EmployeeRegData where EmpId=@empId";
+            }
+            else if (leaveType == "matternityLeaves")
+            {
+                readLeaveCountQuery = "select MatternityLeaves from EmployeeRegData where EmpId=@empId";
+            }
+            SqlConnection conCheckCount = GetConnectionString();
+            SqlCommand cmdCheckCount = new SqlCommand(readLeaveCountQuery, conCheckCount);
+            conCheckCount.Open();
+            cmdCheckCount.Parameters.AddWithValue("@EmpId", empId);
+            SqlDataReader readTypeOfLeave = cmdCheckCount.ExecuteReader();
+            int leaveCount;
+            if (readTypeOfLeave.HasRows)
+            {
+                while (readTypeOfLeave.Read())
+                {
+                    leaveCount = Convert.ToInt16(readTypeOfLeave[0]);
+                    
+                    if (NoOfLeaveDaysApplied <= leaveCount)
+                    {
+                        return true;
+                    }                    
+                }
+                conCheckCount.Close();
+            }
+            return false ;
+        }
+
+
+        public List<AppliedEmployeeLeaves> GetAllEmpLeaves(int empId)
+        {
+            List<AppliedEmployeeLeaves> allEmpLeaves = new List<AppliedEmployeeLeaves>();
+            SqlConnection conGetAllEmpLeaves = GetConnectionString();
+            SqlCommand cmdGetAllEmpLeaves = new SqlCommand("SP_GetAllEmpLeaves", conGetAllEmpLeaves);
+            conGetAllEmpLeaves.Open();
+            cmdGetAllEmpLeaves.Parameters.AddWithValue("@UserId", empId);
+            cmdGetAllEmpLeaves.CommandType = System.Data.CommandType.StoredProcedure;
+            
+            SqlDataAdapter sqlDataget = new SqlDataAdapter(cmdGetAllEmpLeaves);
+            DataTable dataTableObj = new DataTable();
+            sqlDataget.Fill(dataTableObj);
+            conGetAllEmpLeaves.Close();
+            foreach (DataRow empLeaveReq in dataTableObj.Rows)
+            {
+                AppliedEmployeeLeaves empLeaveRequests = new AppliedEmployeeLeaves();
+                empLeaveRequests.UserId = Convert.ToInt16(empLeaveReq["UserId"]);
+                empLeaveRequests.ApplicationId = Convert.ToInt16(empLeaveReq["ApplicationId"]);
+                empLeaveRequests.TypeOfLeave = empLeaveReq["TypeOfLeave"].ToString();
+                empLeaveRequests.Description = empLeaveReq["Description"].ToString();
+                empLeaveRequests.Status = "Pending";
+                empLeaveRequests.DateOfApplication = Convert.ToDateTime(empLeaveReq["DateOfApplication"]);
+                empLeaveRequests.LeaveFromDt = Convert.ToDateTime(empLeaveReq["LeaveFromDt"]);
+                empLeaveRequests.LeaveToDt = Convert.ToDateTime(empLeaveReq["LeaveToDt"]);
+
+
+
+                allEmpLeaves.Add(empLeaveRequests);
+            }
+            return allEmpLeaves;
+        }
+
         public SqlConnection GetConnectionString()
         {
             SqlConnection getCon = new SqlConnection("Data Source=localhost;Initial Catalog=Emp_Leave_System;Integrated Security=True");
