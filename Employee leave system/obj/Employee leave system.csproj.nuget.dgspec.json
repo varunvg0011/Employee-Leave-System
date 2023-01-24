@@ -40,10 +40,6 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
-            "DotNet.Cookies": {
-              "target": "Package",
-              "version": "[1.0.0, )"
-            },
             "Microsoft.AspNetCore.Http": {
               "target": "Package",
               "version": "[2.2.2, )"
@@ -60,13 +56,13 @@
               "target": "Package",
               "version": "[4.3.4, )"
             },
-            "System.Web.Http.Common": {
+            "bootstrap": {
               "target": "Package",
-              "version": "[4.0.20126.16343, )"
+              "version": "[5.2.3, )"
             },
-            "jquery.cookie": {
+            "jQuery": {
               "target": "Package",
-              "version": "[1.4.1, )"
+              "version": "[3.6.3, )"
             },
             "log4net": {
               "target": "Package",

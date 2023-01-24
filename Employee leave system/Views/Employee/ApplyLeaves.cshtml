@@ -23,7 +23,7 @@
                     <label class="mb-3" for="LeaveType">Please choose the type of leave you want to apply:</label>
                 </div>
                 <div style="display:table-cell;padding-right:10px">
-                    <select onchange='GetLeaveType()' class="form-select form-select-md mb-3" aria-label=".form-select-md" id="LeaveType">
+                    <select onchange='GetLeaveType()' class="form-select form-select-md mb-3" aria-label=".form-select-md" id="LeaveType" required>
                         <option selected>Select Type</option>
                         <option value="casualLeaves">Casual Leaves</option>
                         <option value="sickLeaves">Sick Leaves</option>
@@ -37,7 +37,7 @@
                     <label class="mb-3" for="LeaveReason">Reason for Leave:</label>
                 </div>
                 <div style="display:table-cell;padding-right:10px">
-                    <textarea class="form-control form-control-md mb-3" aria-label=".form-select-md" id="LeaveReason" rows="5"></textarea>    
+                    <textarea class="form-control form-control-md mb-3" aria-label=".form-select-md" id="LeaveReason" rows="5" required></textarea>    
                 </div>
             </div>
             <div class="form-group" style="display:table-row">
@@ -45,7 +45,7 @@
                     <label>Available Balance:</label>
                 </div>
                 <div style="display:table-cell;padding-right:10px">
-                    <input onchange = IfAvailableBalanceIsZero(this) id="AvailableBalance" class="form-control form-control-md mb-3" type="number" aria-label=".form-control-md example"  disabled >
+                    <input onchange = IfAvailableBalanceIsZero(this) id="AvailableBalance" class="form-control form-control-md mb-3" type="number" aria-label=".form-control-md example" required disabled >
                 </div>
             </div>
 
@@ -54,7 +54,7 @@
                     <label>From Date:</label>
                 </div>
                 <div style="display:table-cell;padding-right:10px">
-                    <input onchange='CountLeavesTaken()' id="FromDate" class="form-control form-control-md mb-3" type="text" aria-label=".form-control-md example" readonly >
+                    <input onchange='CountLeavesTaken()' id="FromDate" class="form-control form-control-md mb-3" type="text" aria-label=".form-control-md example" required readonly >
                 </div>
             </div>
 
@@ -63,7 +63,7 @@
                     <label>To Date:</label>
                 </div>
                 <div style="display:table-cell;padding-right:10px">
-                    <input onchange='CountLeavesTaken()' id="ToDate" class="form-control form-control-md mb-3" type="text" aria-label=".form-control-md example" readonly>
+                    <input onchange='CountLeavesTaken()' id="ToDate" class="form-control form-control-md mb-3" type="text" aria-label=".form-control-md example" required readonly>
                 </div>
             </div>
 
@@ -96,7 +96,7 @@
                     <label>Return to Date:</label>
                 </div>
                 <div style="display:table-cell;padding-right:10px">
-                    <input id="ReturnToDate" class="form-control form-control-lg mb-3" type="text" aria-label=".form-control-lg example"  disabled >
+                    <input id="ReturnToDate" class="form-control form-control-lg mb-3" type="text" aria-label=".form-control-lg example" required disabled >
                 </div>
             </div>
 
@@ -256,7 +256,7 @@
     }
 
     function CancelApplyLeaves(){
-        window.location = "CancelLeaveRequest"
+        window.location = "EmployeeDashboard"
     }
 
     function SubmitLeaveReq(){

@@ -6,6 +6,9 @@ namespace Employee_leave_system.Models
 {
     public class AdminUserDetails
     {
+
+
+
         public int AdminID { get; set; }
 
 
@@ -49,15 +52,15 @@ namespace Employee_leave_system.Models
         public string Username { get; set; }
 
 
-
-
-        
-
+        public string ImgData { get; set; }
 
 
 
-        
 
-        
+
+
+
+
+
     }
 }

@@ -2,6 +2,8 @@
 {
     public class AppliedEmployeeLeaves
     {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public int UserId { get; set; }
         public int ApplicationId { get; set; }
         public string TypeOfLeave { get; set; }

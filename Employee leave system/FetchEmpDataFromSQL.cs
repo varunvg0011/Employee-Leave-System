@@ -247,7 +247,7 @@ namespace Employee_leave_system
                 empLeaveRequests.ApplicationId = Convert.ToInt16(empLeaveReq["ApplicationId"]);
                 empLeaveRequests.TypeOfLeave = empLeaveReq["TypeOfLeave"].ToString();
                 empLeaveRequests.Description = empLeaveReq["Description"].ToString();
-                empLeaveRequests.Status = "Pending";
+                empLeaveRequests.Status = empLeaveReq["Status"].ToString();
                 empLeaveRequests.DateOfApplication = Convert.ToDateTime(empLeaveReq["DateOfApplication"]);
                 empLeaveRequests.LeaveFromDt = Convert.ToDateTime(empLeaveReq["LeaveFromDt"]);
                 empLeaveRequests.LeaveToDt = Convert.ToDateTime(empLeaveReq["LeaveToDt"]);

@@ -8,33 +8,20 @@
     ".NETCoreApp,Version=v6.0": {
       "Employee leave system/1.0.0": {
         "dependencies": {
-          "DotNet.Cookies": "1.0.0",
           "Microsoft.AspNetCore.Http": "2.2.2",
           "RestSharp": "108.0.3",
           "System.Data.SqlClient": "4.8.5",
           "System.Net.Http": "4.3.4",
-          "System.Web.Http.Common": "4.0.20126.16343",
-          "jQuery.Cookie": "1.4.1",
+          "bootstrap": "5.2.3",
+          "jQuery": "3.6.3",
           "log4net": "2.0.15"
         },
         "runtime": {
           "Employee leave system.dll": {}
         }
       },
-      "DotNet.Cookies/1.0.0": {
-        "runtime": {
-          "lib/net461/DotNet.Cookies.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
-      },
-      "jQuery/1.4.4": {},
-      "jQuery.Cookie/1.4.1": {
-        "dependencies": {
-          "jQuery": "1.4.4"
-        }
-      },
+      "bootstrap/5.2.3": {},
+      "jQuery/3.6.3": {},
       "log4net/2.0.15": {
         "dependencies": {
           "System.Configuration.ConfigurationManager": "4.5.0"
@@ -610,14 +597,6 @@
           "Microsoft.NETCore.Targets": "1.1.0",
           "System.Runtime": "4.3.0"
         }
-      },
-      "System.Web.Http.Common/4.0.20126.16343": {
-        "runtime": {
-          "lib/net40/System.Web.Http.Common.dll": {
-            "assemblyVersion": "4.0.0.0",
-            "fileVersion": "4.0.20126.16343"
-          }
-        }
       }
     }
   },
@@ -627,26 +606,19 @@
       "serviceable": false,
       "sha512": ""
     },
-    "DotNet.Cookies/1.0.0": {
+    "bootstrap/5.2.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Cy93z7E7O/POsVN1hDjZZrlE52NJMQsGP+pBqxWsfiDFjR7BU9UGvuVkviIQ7gX+XOsSUcuhi+3jcanhiKr/Gw==",
-      "path": "dotnet.cookies/1.0.0",
-      "hashPath": "dotnet.cookies.1.0.0.nupkg.sha512"
+      "sha512": "sha512-tZZrH4HdqBr/oeUlGoc2KliYlwXeN3qyhKgc1B5dc585+lnMkcD4A5yIX2NmNoXCCagQQiQGKn7A97sWoo2AOw==",
+      "path": "bootstrap/5.2.3",
+      "hashPath": "bootstrap.5.2.3.nupkg.sha512"
     },
-    "jQuery/1.4.4": {
+    "jQuery/3.6.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-kexCeYIZehR5fRjo8CK1sngN5SZEQRFNfCYZHMS1RxwEEiSKetBw/gliYJcLJdJEBB+e9aHqleLCjuaSI7u23g==",
-      "path": "jquery/1.4.4",
-      "hashPath": "jquery.1.4.4.nupkg.sha512"
-    },
-    "jQuery.Cookie/1.4.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-P51hSplNrHZbaq6kXsTPEhuL8eIi3gPLiNQChQdtZGUrgaW+xLgs/5dHrPnne47xgAZf5e2NuR03kvLHytw2rQ==",
-      "path": "jquery.cookie/1.4.1",
-      "hashPath": "jquery.cookie.1.4.1.nupkg.sha512"
+      "sha512": "sha512-v87yTa8y+t642SsUBRl+XSFg1+zkMfRMd3aO714aYL+AwVxglV7tcW7ZoL4BgwczXev8ge+0kNQBj2rWdyI+dQ==",
+      "path": "jquery/3.6.3",
+      "hashPath": "jquery.3.6.3.nupkg.sha512"
     },
     "log4net/2.0.15": {
       "type": "package",
@@ -1179,13 +1151,6 @@
       "sha512": "sha512-LbSxKEdOUhVe8BezB/9uOGGppt+nZf6e1VFyw6v3DN6lqitm0OSn2uXMOdtP0M3W4iMcqcivm2J6UgqiwwnXiA==",
       "path": "system.threading.tasks/4.3.0",
       "hashPath": "system.threading.tasks.4.3.0.nupkg.sha512"
-    },
-    "System.Web.Http.Common/4.0.20126.16343": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-3tybnaxSQAWu2aLSAh+7PRZ8Cw4f/DIECPJZ5yBcnm5sQKjr95zViCasYH3p6Z1hxATSTmlecvCcvlt/FDy+8w==",
-      "path": "system.web.http.common/4.0.20126.16343",
-      "hashPath": "system.web.http.common.4.0.20126.16343.nupkg.sha512"
     }
   }
 }

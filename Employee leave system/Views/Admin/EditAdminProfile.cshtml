@@ -105,10 +105,14 @@
     </div>
     *@
     <hr />
+
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()        
         <div class="form-horizontal" style="display:table;margin:auto !important;width: 50% !important;border: solid green 3px;padding: 10px;background-color:antiquewhite">        
+            <img src='@Model.ImgData' style="margin-left:135%;margin-bottom:30%;width:50%;height:20%;border-radius:300px;margin-top:10%;" class="card-img-top" alt="@Model.Username's image">
+
+            
             <div class="form-group" style="display:table-row">
                 <div style="width:max-content;margin-left:15px">
                     <i class='fas fa-id-badge' style='font-size:24px;'></i>

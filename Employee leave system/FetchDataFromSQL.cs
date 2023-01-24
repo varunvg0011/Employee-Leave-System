@@ -56,7 +56,7 @@ namespace Employee_leave_system
         public AdminUserDetails GetAllAdminDetails(string adminUsername)
         {
             AdminUserDetails AdminDetailsList = new AdminUserDetails();
-            string  dbFName, dbLName, dbDesignation, dBUserName, dBPassword;
+            string  dbFName, dbLName, dbDesignation, dBUserName, dBPassword, dbImgData;
             DateTime dbDateOfReg;
             int dbAdminId, dbAge;
 
@@ -76,8 +76,9 @@ namespace Employee_leave_system
                     dbLName = readAdminCred["LastName"].ToString();
                     dbDesignation = readAdminCred["Designation"].ToString();
                     dbAge = Convert.ToInt16(readAdminCred["Age"]);
-                    var dbGender = Convert.ToChar(readAdminCred["gender"]);
+                    var dbGender = Convert.ToChar(readAdminCred["Gender"]);
                     dbDateOfReg = Convert.ToDateTime(readAdminCred["DateOfReg"]);
+                    dbImgData = readAdminCred["ImgData"].ToString();
 
                     AdminDetailsList.AdminID =  dbAdminId;
                     AdminDetailsList.FirstName = dbFName;
@@ -87,6 +88,7 @@ namespace Employee_leave_system
                     AdminDetailsList.Gender = dbGender;
                     AdminDetailsList.RegistrationDate = dbDateOfReg;
                     AdminDetailsList.Username = dBUserName;
+                    AdminDetailsList.ImgData = dbImgData;
                 }                
             }
             return AdminDetailsList;
@@ -160,6 +162,8 @@ namespace Employee_leave_system
             {
                 AppliedEmployeeLeaves empLeaveRequests = new AppliedEmployeeLeaves();
                 empLeaveRequests.UserId = Convert.ToInt16(empLeaveReq["UserId"]);
+                empLeaveRequests.FirstName = Convert.ToString(empLeaveReq["FirstName"]);
+                empLeaveRequests.LastName = Convert.ToString(empLeaveReq["LastName"]);
                 empLeaveRequests.ApplicationId = Convert.ToInt16(empLeaveReq["ApplicationId"]);
                 empLeaveRequests.TypeOfLeave = empLeaveReq["TypeOfLeave"].ToString();
                 empLeaveRequests.Description = empLeaveReq["Description"].ToString();
@@ -167,9 +171,6 @@ namespace Employee_leave_system
                 empLeaveRequests.DateOfApplication = Convert.ToDateTime(empLeaveReq["DateOfApplication"]);
                 empLeaveRequests.LeaveFromDt = Convert.ToDateTime(empLeaveReq["LeaveFromDt"]);
                 empLeaveRequests.LeaveToDt = Convert.ToDateTime(empLeaveReq["LeaveToDt"]);
-
-
-
                 allEmpLeaves.Add(empLeaveRequests);
             }
             return allEmpLeaves;
@@ -266,22 +267,22 @@ namespace Employee_leave_system
             string WriteLeaveCountQuery = string.Empty;
             int getLeaveCount=0,setLeaveCount=0;
 
-            if (typeOfLeaveApplied == "SickLeave" || typeOfLeaveApplied == "SickLeaves")
+            if (typeOfLeaveApplied.ToUpper() == "SICKLEAVES" )
             {
                 readLeaveCountQuery = "select SickLeaves from EmployeeRegData where EmpId = @EmpId";
                 WriteLeaveCountQuery = "UPDATE EmployeeRegData SET SickLeaves = @SetLeaveCount where EmpId = @EmpId";
             }
-            else if (typeOfLeaveApplied == "PatternityLeave" || typeOfLeaveApplied == "PatternityLeaves")
+            else if (typeOfLeaveApplied.ToUpper() == "PATTERNITYLEAVES" )
             {
                 readLeaveCountQuery = "select PatternityLeaves from EmployeeRegData where EmpId = @EmpId";
                 WriteLeaveCountQuery = "UPDATE EmployeeRegData SET PatternityLeaves = @SetLeaveCount where EmpId = @EmpId";
             }
-            else if (typeOfLeaveApplied == "CasualLeave" || typeOfLeaveApplied == "CasualLeaves")
+            else if (typeOfLeaveApplied.ToUpper() == "CASUALLEAVES")
             {
                 readLeaveCountQuery = "select CasualLeaves from EmployeeRegData where EmpId = @EmpId";
                 WriteLeaveCountQuery = "UPDATE EmployeeRegData SET CasualLeaves = @SetLeaveCount where EmpId = @EmpId";
             }
-            else if (typeOfLeaveApplied == "MatternityLeave" || typeOfLeaveApplied == "MatternityLeaves")
+            else if (typeOfLeaveApplied.ToUpper() == "MATTERNITYLEAVES")
             {
                 readLeaveCountQuery = "select MatternityLeaves from EmployeeRegData where EmpId = @EmpId";
                 WriteLeaveCountQuery = "UPDATE EmployeeRegData SET MatternityLeaves = @SetLeaveCount where EmpId = @EmpId";
@@ -372,6 +373,22 @@ namespace Employee_leave_system
             return false;
         }
 
+
+
+        public bool IsUsernameUnique(string username)
+        {
+            SqlConnection conCheckUsername = GetConnectionString();
+            SqlCommand cmdCheckUsername = new SqlCommand("Select UserName from EmployeeRegData where UserName = @UserName", conCheckUsername);
+            conCheckUsername.Open();
+            cmdCheckUsername.Parameters.AddWithValue("@UserName", username);
+            SqlDataReader readUsername = cmdCheckUsername.ExecuteReader();
+            
+            if (readUsername.HasRows==false)
+            {
+                return true;
+            }
+            return false;
+        }
 
         public SqlConnection GetConnectionString()
         {

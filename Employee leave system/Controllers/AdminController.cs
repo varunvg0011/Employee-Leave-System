@@ -26,16 +26,14 @@ namespace Employee_leave_system.Controllers
             if (ModelState.IsValid)
             {               
                 if (CheckAdminUsernameInDB(adminObj))
-                {
-                    HttpContext.Session.SetString("Username", adminObj.UserName);
-                    HttpContext.Session.SetString("AdminRole", "Admin");
-
-                    //never store unnecessary data in Session
-                    //never store password as its of no use to be used in other controllers
-                    //HttpContext.Session.SetString("adminPass", adminObj.Password);
+                {                    
                     if (CheckAdminPasswordInDB(adminObj))
                     {
-                        
+                        HttpContext.Session.SetString("Username", adminObj.UserName);
+                        HttpContext.Session.SetString("AdminRole", "Admin");
+                        //never store unnecessary data in Session
+                        //never store password as its of no use to be used in other controllers
+                        //HttpContext.Session.SetString("adminPass", adminObj.Password);
                         if (AdminLoginLog())
                         {
                             //return View("AllEmployees", AllEmployeeData);
@@ -143,14 +141,19 @@ namespace Employee_leave_system.Controllers
             return RedirectToAction("AllEmployees");
         }
 
-        public bool AddEmployeeToDB(string username, string firstName, string lastName, char gender, string designation, int casualLeaves, int sickLeaves, int matternityLeaves, int patternityLeaves, string password, DateTime regDate, string imgData)
+        public string AddEmployeeToDB(string username, string firstName, string lastName, char gender, string designation, int casualLeaves, int sickLeaves, int matternityLeaves, int patternityLeaves, string password, DateTime regDate, string imgData)
         {
+            bool IaEmpUsernameUnique = fetchObj.IsUsernameUnique(username);
             bool IsEmployeeAdded = fetchObj.AddEmpToDB( username,  firstName,  lastName,  gender,  designation,  casualLeaves,  sickLeaves,  matternityLeaves,  patternityLeaves,  password,  regDate, imgData);
-            if (IsEmployeeAdded)
+            if (IaEmpUsernameUnique)
             {
-                return true;
-            }
-            return false;
+                if (IsEmployeeAdded)
+                {
+                    return "Employee has been added!";
+                }
+                return "There was some issue adding employee, please try again or contact admin if issue still persists.";
+            }           
+            return "Username is already occupied, please try another one!";
         }
 
         public IActionResult UnauthorizedAccess()
@@ -185,6 +188,7 @@ namespace Employee_leave_system.Controllers
 
             string typeOfLeaveApplied = (fetchObj.GetTypeOfLeave(applicationID));
             bool isLeaveApproved = fetchObj.IsLeaveApproved(applicationID);
+            
             int leaveDays = Convert.ToInt16((toDate - fromDate).TotalDays) + 1;
             if (isLeaveApproved && typeOfLeaveApplied!=string.Empty)
             {

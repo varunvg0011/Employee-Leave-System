@@ -132,11 +132,7 @@ namespace Employee_leave_system.Controllers
             return View(empDetailsList);
         }
 
-        [EmployeeAttribute]
-        public IActionResult CancelUpdatingEmpDetails()
-        {
-            return RedirectToAction("EmployeeDashboard");
-        }
+        
 
         public bool UpdateEmpProfile(string firstName, string lastName)
         {
@@ -182,11 +178,7 @@ namespace Employee_leave_system.Controllers
             return (toDate.Date - fromDate.Date).Days+1;
         }
 
-        [EmployeeAttribute]
-        public IActionResult CancelLeaveRequest()
-        {
-            return RedirectToAction("EmployeeDashboard");
-        }
+        
 
         public bool UpdateEmpProfilePic(string imgData)
         {

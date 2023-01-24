@@ -32,9 +32,7 @@ F:\CODING\CSharp\Employee leave system\Employee leave system\bin\Debug\net6.0\ru
 F:\CODING\CSharp\Employee leave system\Employee leave system\bin\Debug\net6.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
 F:\CODING\CSharp\Employee leave system\Employee leave system\obj\Debug\net6.0\Employee leave system.csproj.CopyComplete
 F:\CODING\CSharp\Employee leave system\Employee leave system\bin\Debug\net6.0\RestSharp.dll
-F:\CODING\CSharp\Employee leave system\Employee leave system\bin\Debug\net6.0\DotNet.Cookies.dll
 F:\CODING\CSharp\Employee leave system\Employee leave system\bin\Debug\net6.0\libman.json
-F:\CODING\CSharp\Employee leave system\Employee leave system\bin\Debug\net6.0\System.Web.Http.Common.dll
 F:\CODING\CSharp\Employee leave system\Employee leave system\bin\Debug\net6.0\log4net.dll
 F:\CODING\CSharp\Employee leave system\Employee leave system\bin\Debug\net6.0\System.Configuration.ConfigurationManager.dll
 F:\CODING\CSharp\Employee leave system\Employee leave system\bin\Debug\net6.0\System.Security.Cryptography.ProtectedData.dll

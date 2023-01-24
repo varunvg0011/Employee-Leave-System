@@ -14,32 +14,38 @@
                     foreach (var empLeaveRow in Model)
                     {
                         <div class="card" style="width: 20rem; background-color:beige; align-items:center">
-                          <div class="card-body">
-                            <h5 class="card-title">Leave request:</h5>
-                            <div>     
-                                <div id="empUserID" >
-                                    <b>Employee Id: </b>@empLeaveRow.UserId
-                                </div>
-                                <div id="TypeOfLeave">
-                                    <b>Type Of Leave: </b>@empLeaveRow.TypeOfLeave                                   
-                                </div>
-                                <div>
-                                    <b>Description: </b>@empLeaveRow.Description
-                                </div>
-                                 <div>
-                                    <b>Status: </b>@empLeaveRow.Status
-                                 </div>
-                                 <div>
-                                    <b>DateOfApplication: </b>@empLeaveRow.DateOfApplication.ToString().Split(" ")[0]
-                                 </div>
-                                 <div id= "FromDate">
-                                    <b>Leave From: </b>@empLeaveRow.LeaveFromDt.ToString().Split(" ")[0]
-                                 </div>
-                                 <div id="ToDate">
-                                    <b>Leave To: </b>@empLeaveRow.LeaveToDt.ToString().Split(" ")[0]
-                                 </div>
+                          <div class="card-body">                            
+                            <table style="font-size:.9rem">     
+                                <tr>
+                                    <td><b>Employee Id: </b></td>
+                                    <td>@empLeaveRow.UserId</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Type Of Leave: </b></td>
+                                    <td>@empLeaveRow.TypeOfLeave</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Description: </b></td>
+                                    <td>@empLeaveRow.Description</td>
+                                </tr>
+                                 <tr>
+                                    <td><b>Status: </b></td>
+                                    <td>@empLeaveRow.Status</td>
+                                 </tr>
+                                 <tr>
+                                    <td><b>DateOfApplication: </b></td>
+                                    <td>@empLeaveRow.DateOfApplication.ToString().Split(" ")[0]</td>
+                                 </tr>
+                                 <tr>
+                                    <td><b>Leave From: </b></td>
+                                    <td>@empLeaveRow.LeaveFromDt.ToString().Split(" ")[0]</td>
+                                 </tr>
+                                 <tr>
+                                    <td><b>Leave To: </b></td>
+                                    <td>@empLeaveRow.LeaveToDt.ToString().Split(" ")[0]</td>
+                                 </tr>
                                                                                         
-                            </div>
+                            </table>
                           </div>
                             
                         </div>

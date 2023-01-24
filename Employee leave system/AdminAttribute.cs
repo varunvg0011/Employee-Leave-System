@@ -9,6 +9,7 @@ namespace Employee_leave_system
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
+            base.OnActionExecuting(context);
             string sessionRole = context.HttpContext.Session.GetString("AdminRole");
             if (sessionRole != "Admin")
             {
@@ -26,8 +27,7 @@ namespace Employee_leave_system
                 //whatever request is next, it will process and continue 
                 return;
             }
-
-            base.OnActionExecuting(context);
+           
         }
     }
 }
